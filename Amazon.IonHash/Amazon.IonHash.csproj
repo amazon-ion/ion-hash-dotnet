@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Amazon.IonHash</RootNamespace> 
+    <Company>Amazon</Company> 
+    <Authors>Amazon</Authors> 
+    <Version>0.1.0</Version> 
+    <Description>The .NET implementation of Ion Hash.</Description> 
+    <Copyright>Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.</Copyright> 
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile> 
+    <RepositoryUrl>https://github.com/awslabs/amazon-ion-hash-dotnet</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="IonDotnet" Version="0.0.3-alpha" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0-preview3.19551.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+    <Compile Remove="Internals\IonValue.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reader\" />
+    <Folder Include="Writer\" />
+    <Folder Include="IonHasher\" />
+    <Folder Include="Internals\" />
+  </ItemGroup>
+</Project>
