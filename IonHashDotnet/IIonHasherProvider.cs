@@ -1,6 +1,6 @@
 ﻿namespace Amazon.IonHash
 {
-    public interface IIonHashProvider
+    public interface IIonHasherProvider
     {
         IIonHasher NewHasher();
     }

@@ -11,7 +11,7 @@
 
         public IIonHasher NewHasher()
         {
-            return new IonHasher(this.algorithm);
+            return new CryptoIonHasher(this.algorithm);
         }
     }
 }
