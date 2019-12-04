@@ -1,4 +1,4 @@
-﻿namespace Amazon.IonHash
+﻿namespace IonHashDotnet
 {
     public class CryptoHasherProvider : IIonHasherProvider
     {

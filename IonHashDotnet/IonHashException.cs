@@ -1,4 +1,4 @@
-﻿namespace Amazon.IonHash
+﻿namespace IonHashDotnet
 {
     using System;
     using IonDotnet;
