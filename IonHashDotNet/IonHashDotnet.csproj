@@ -26,11 +26,4 @@
   <ItemGroup>
    <None Include="../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Program.cs" />
-    <Compile Remove="Internals\IonValue.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Internals\" />
-  </ItemGroup>
 </Project>
