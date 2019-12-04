@@ -2,18 +2,26 @@
 {
     using System;
     using System.Collections.Generic;
+<<<<<<< HEAD
     using System.IO;
     using System.Linq;
+=======
+>>>>>>> Private functions handling annotations
     using IonDotnet;
     using IonDotnet.Systems;
 
     internal class Serializer
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         private bool hasContainerAnnotation;
 =======
         private bool hasContainerAnnotation = false;
 >>>>>>> initial commit
+=======
+
+        private bool hasContainerAnnotation;
+>>>>>>> Private functions handling annotations
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
@@ -21,8 +29,11 @@
             this.Depth = depth;
         }
 
+<<<<<<< HEAD
         internal int Depth { get; }
 
+=======
+>>>>>>> Private functions handling annotations
         internal IIonHasher HashFunction { get; private set; }
 
         internal void Scalar(IIonValue ionValue)
@@ -106,7 +117,21 @@
 
         private static byte[] Escape(byte[] bytes)
         {
-            throw new NotImplementedException();
+            IList<SymbolToken> annotations = ionValue.Annotations;
+            if (annotations.Count > 0)
+            {
+                this.BeginMarker();
+                this.Update(Constants.TqAnnotatedValue);
+                foreach (var annotation in annotations)
+                {
+                    this.WriteSymbol(annotation.Text);
+                }
+
+                if (isContainer)
+                {
+                    this.hasContainerAnnotation = true;
+                }
+            }
         }
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
@@ -143,6 +168,7 @@
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
+<<<<<<< HEAD
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
             (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
@@ -153,6 +179,9 @@
             }
 
             this.EndMarker();
+=======
+            var scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+>>>>>>> Private functions handling annotations
         }
 
         private byte[] GetBytes(IonType type, dynamic value, bool isNull)
