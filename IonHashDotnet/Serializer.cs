@@ -1,18 +1,19 @@
 ﻿namespace IonHashDotnet
 {
     using System;
+    using System.Collections.Generic;
     using IonDotnet;
-    using IonDotnet.Tree;
 
     internal class Serializer
     {
-        internal IIonHasher HashFunction;
 
-        private bool hashContainerAnnotation;
+        private bool hasContainerAnnotation;
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
         }
+
+        internal IIonHasher HashFunction { get; private set; }
 
         internal void Scalar(IIonValue ionValue)
         {
@@ -86,7 +87,7 @@
                     writer.WriteTimestamp(value);
                     break;
                 case IonType.Null:
-                    writer.WriteNull();
+                    writer.WriteNull(IonType.Null);
                     break;
                 default:
                     throw new IonHashException("Unexpected type '" + type + "'");
@@ -95,20 +96,42 @@
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
         {
-            throw new NotImplementedException();
+            IList<SymbolToken> annotations = ionValue.Annotations;
+            if (annotations.Count > 0)
+            {
+                this.BeginMarker();
+                this.Update(Constants.TqAnnotatedValue);
+                foreach (var annotation in annotations)
+                {
+                    this.WriteSymbol(annotation.Text);
+                }
+
+                if (isContainer)
+                {
+                    this.hasContainerAnnotation = true;
+                }
+            }
         }
 
         private void HandleAnnotationsEnd(IIonValue ionValue, bool isContainer = false)
         {
-            throw new NotImplementedException();
+            if ((ionValue != null && ionValue.Annotations.Count > 0) || (isContainer && this.hasContainerAnnotation))
+            {
+                this.EndMarker();
+                if (isContainer)
+                {
+                    this.hasContainerAnnotation = false;
+                }
+            }
         }
 
         private void WriteSymbol(string token)
         {
-            throw new NotImplementedException();
+            this.BeginMarker();
+            var scalarBytes = this.GetBytes(IonType.Symbol, token, false);
         }
 
-        private void GetBytes(IonType type, dynamic value, bool isNull)
+        private byte[] GetBytes(IonType type, dynamic value, bool isNull)
         {
             throw new NotImplementedException();
         }
