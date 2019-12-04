@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-   <None Include="../LICENSE" Pack="true" Visible="false" PackagePath="" />
+   <None Include="../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Program.cs" />
