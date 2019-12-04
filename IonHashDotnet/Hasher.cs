@@ -1,4 +1,4 @@
-﻿namespace Amazon.IonHash
+﻿nnamespace IonHashDotnet
 {
     using System;
     using System.Collections.Generic;
