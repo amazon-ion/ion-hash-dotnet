@@ -2,11 +2,11 @@
 {
     using System.Security.Cryptography;
 
-    public class IonHasher : IIonHasher
+    internal class CryptoIonHasher : IIonHasher
     {
         private readonly HashAlgorithm hashAlgorithm;
 
-        public IonHasher(string algorithm)
+        internal CryptoIonHasher(string algorithm)
         {
             this.hashAlgorithm = HashAlgorithm.Create(algorithm);
 

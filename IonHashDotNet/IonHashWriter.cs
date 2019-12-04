@@ -5,12 +5,12 @@
     using System.Numerics;
     using IonDotnet;
 
-    public class IonHashWriter : IIonHashWriter, IIonValue
+    internal class IonHashWriter : IIonHashWriter, IIonValue
     {
         private readonly IIonWriter writer;
         private readonly Hasher hasher;
 
-        public IonHashWriter(IIonWriter writer, IIonHashProvider hasherProvider)
+        internal IonHashWriter(IIonWriter writer, IIonHasherProvider hasherProvider)
         {
             this.writer = writer;
             this.hasher = new Hasher(hasherProvider);
@@ -301,7 +301,7 @@
                         this.StepIn(IonType.Struct);
                         break;
                     default:
-                        throw new SystemException("Unexpected type '" + type + "'");
+                        throw new IonHashException("Unexpected type '" + type + "'");
                 }
 
                 if (type.IsContainer())

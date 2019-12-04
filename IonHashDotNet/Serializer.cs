@@ -89,7 +89,7 @@
                     writer.WriteNull();
                     break;
                 default:
-                    throw new SystemException("Unexpected type '" + type + "'");
+                    throw new IonHashException("Unexpected type '" + type + "'");
             }
         }
 

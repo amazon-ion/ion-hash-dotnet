@@ -4,7 +4,7 @@
 
     public class IonHashReaderBuilder
     {
-        private IIonHashProvider hasherProvider;
+        private IIonHasherProvider hasherProvider;
         private IIonReader reader;
 
         // no public constructor
@@ -23,7 +23,7 @@
             return this;
         }
 
-        public IonHashReaderBuilder WithHasherProvider(IIonHashProvider hasherProvider)
+        public IonHashReaderBuilder WithHasherProvider(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
             return this;

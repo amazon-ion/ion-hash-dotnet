@@ -6,11 +6,11 @@
 
     internal class Hasher
     {
-        private IIonHashProvider hasherProvider;
+        private IIonHasherProvider hasherProvider;
         private Serializer currentHasher;
         private Stack<Serializer> hasherStack;
 
-        internal Hasher(IIonHashProvider hasherProvider)
+        internal Hasher(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
             this.currentHasher = new Serializer(hasherProvider.NewHasher(), 0);
@@ -25,7 +25,7 @@
         internal void StepIn(IIonValue ionValue)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
-            if (this.currentHasher.GetType() == typeof(StructSerializer))
+            if (this.currentHasher is StructSerializer)
             {
                 hashFunction = this.hasherProvider.NewHasher();
             }
@@ -54,7 +54,7 @@
             Serializer poppedHasher = this.hasherStack.Pop();
             this.currentHasher = this.hasherStack.Peek();
 
-            if (this.currentHasher.GetType() == typeof(StructSerializer))
+            if (this.currentHasher is StructSerializer)
             {
                 byte[] digest = poppedHasher.Digest();
                 ((StructSerializer)this.currentHasher).AppendFieldHash(digest);
@@ -67,6 +67,7 @@
             {
                 throw new InvalidOperationException("A digest may only be provided at the same depth hashing started");
             }
+
             return this.currentHasher.Digest();
         }
 
