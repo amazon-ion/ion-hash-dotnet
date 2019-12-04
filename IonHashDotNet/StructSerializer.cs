@@ -7,7 +7,7 @@
         private readonly Serializer scalarSerializer;
         private readonly byte[] fieldHashes;
 
-        internal StructSerializer(IIonHasher hashFunction, int depth, IIonHashProvider hashFunctionProvider)
+        internal StructSerializer(IIonHasher hashFunction, int depth, IIonHasherProvider hashFunctionProvider)
             : base(hashFunction, depth)
         {
         }

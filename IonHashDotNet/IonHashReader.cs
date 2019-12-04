@@ -6,13 +6,13 @@
     using System.Numerics;
     using IonDotnet;
 
-    public class IonHashReader : IIonHashReader, IIonValue
+    internal class IonHashReader : IIonHashReader, IIonValue
     {
         private readonly IIonReader reader;
         private readonly Hasher hasher;
         private IonType ionType = IonType.None;
 
-        internal IonHashReader(IIonReader reader, IIonHashProvider hasherProvider)
+        internal IonHashReader(IIonReader reader, IIonHasherProvider hasherProvider)
         {
             this.hasher = new Hasher(hasherProvider);
             this.reader = reader;

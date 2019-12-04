@@ -25,7 +25,7 @@
         internal void StepIn(IIonValue ionValue)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
-            if (this.currentHasher.GetType() == typeof(StructSerializer))
+            if (this.currentHasher is StructSerializer)
             {
                 hashFunction = this.hasherProvider.NewHasher();
             }
@@ -54,7 +54,7 @@
             Serializer poppedHasher = this.hasherStack.Pop();
             this.currentHasher = this.hasherStack.Peek();
 
-            if (this.currentHasher.GetType() == typeof(StructSerializer))
+            if (this.currentHasher is StructSerializer)
             {
                 byte[] digest = poppedHasher.Digest();
                 ((StructSerializer)this.currentHasher).AppendFieldHash(digest);

@@ -1,6 +1,6 @@
 ﻿namespace Amazon.IonHash
 {
-    public class CryptoHasherProvider : IIonHashProvider
+    public class CryptoHasherProvider : IIonHasherProvider
     {
         private readonly string algorithm;
 
