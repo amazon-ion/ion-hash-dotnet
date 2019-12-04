@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Amazon.IonHash</RootNamespace> 
+    <RootNamespace>IonHashDotnet</RootNamespace> 
     <Company>Amazon</Company> 
     <Authors>Amazon</Authors> 
     <Version>0.1.0</Version> 
     <Description>The .NET implementation of Ion Hash.</Description> 
     <Copyright>Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.</Copyright> 
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile> 
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/awslabs/amazon-ion-hash-dotnet</RepositoryUrl> 
     <RepositoryType>git</RepositoryType>
     <OutputType>Exe</OutputType>
@@ -24,16 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Program.cs" />
-    <Compile Remove="Internals\IonValue.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reader\" />
-    <Folder Include="Writer\" />
-    <Folder Include="IonHasher\" />
-    <Folder Include="Internals\" />
+   <None Include="../LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
