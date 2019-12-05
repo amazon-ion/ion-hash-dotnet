@@ -220,7 +220,7 @@
                 case IonType.Timestamp:
                     return this.TimestampValue();
                 default:
-                    throw new IonHashException("Unexpected type '" + this.CurrentType + "'");
+                    throw new InvalidOperationException("Unexpected type '" + this.CurrentType + "'");
             }
         }
 
