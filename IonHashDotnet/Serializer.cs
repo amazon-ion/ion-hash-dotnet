@@ -14,6 +14,7 @@
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         private bool hasContainerAnnotation;
 =======
         private bool hasContainerAnnotation = false;
@@ -22,6 +23,9 @@
 
         private bool hasContainerAnnotation;
 >>>>>>> Private functions handling annotations
+=======
+        private bool hasContainerAnnotation = false;
+>>>>>>> initial commit
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
@@ -30,10 +34,15 @@
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         internal int Depth { get; }
 
 =======
 >>>>>>> Private functions handling annotations
+=======
+        internal int Depth { get; }
+
+>>>>>>> initial commit
         internal IIonHasher HashFunction { get; private set; }
 
         internal void Scalar(IIonValue ionValue)
