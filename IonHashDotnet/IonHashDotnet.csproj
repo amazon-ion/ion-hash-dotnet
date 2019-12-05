@@ -12,8 +12,6 @@
     <RepositoryUrl>https://github.com/amzn/ion-hash-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <OutputType>Library</OutputType>
-    <ApplicationIcon />
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>

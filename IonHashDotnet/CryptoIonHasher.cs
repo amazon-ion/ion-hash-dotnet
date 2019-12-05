@@ -1,5 +1,6 @@
 ﻿namespace IonHashDotnet
 {
+    using System;
     using System.Security.Cryptography;
 
     internal class CryptoIonHasher : IIonHasher
@@ -12,7 +13,7 @@
 
             if (this.hashAlgorithm == null)
             {
-                throw new IonHashException("Invalid Algorithm Specified");
+                throw new ArgumentException("Invalid Algorithm Specified");
             }
         }
 

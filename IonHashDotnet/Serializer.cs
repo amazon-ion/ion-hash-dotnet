@@ -90,7 +90,7 @@
                     writer.WriteNull(IonType.Null);
                     break;
                 default:
-                    throw new IonHashException("Unexpected type '" + type + "'");
+                    throw new InvalidOperationException("Unexpected type '" + type + "'");
             }
         }
 

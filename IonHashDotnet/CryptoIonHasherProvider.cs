@@ -1,10 +1,10 @@
 ﻿namespace IonHashDotnet
 {
-    public class CryptoHasherProvider : IIonHasherProvider
+    public class CryptoIonHasherProvider : IIonHasherProvider
     {
         private readonly string algorithm;
 
-        public CryptoHasherProvider(string algorithm)
+        public CryptoIonHasherProvider(string algorithm)
         {
             this.algorithm = algorithm;
         }
