@@ -6,12 +6,15 @@
 
     internal class Serializer
     {
-
-        private bool hasContainerAnnotation;
+        private bool hasContainerAnnotation = false;
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
+            this.HashFunction = hashFunction;
+            this.Depth = depth;
         }
+
+        internal int Depth { get; }
 
         internal IIonHasher HashFunction { get; private set; }
 
