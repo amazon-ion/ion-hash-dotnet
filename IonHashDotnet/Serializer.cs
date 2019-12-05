@@ -2,7 +2,6 @@
 {
     using System;
     using IonDotnet;
-    using IonDotnet.Tree;
 
     internal class Serializer
     {
@@ -89,7 +88,7 @@
                     writer.WriteNull();
                     break;
                 default:
-                    throw new IonHashException("Unexpected type '" + type + "'");
+                    throw new InvalidOperationException("Unexpected type '" + type + "'");
             }
         }
 

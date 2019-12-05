@@ -1,4 +1,4 @@
-﻿nnamespace IonHashDotnet
+﻿namespace IonHashDotnet
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +14,7 @@
         {
             this.hasherProvider = hasherProvider;
             this.currentHasher = new Serializer(hasherProvider.NewHasher(), 0);
+            this.hasherStack = new Stack<Serializer>();
             this.hasherStack.Push(this.currentHasher);
         }
 

@@ -140,7 +140,7 @@
 
         public void WriteBlob(ReadOnlySpan<byte> value)
         {
-            List<byte> byteList = new List<byte>(value.ToArray());
+            byte[] byteList = value.ToArray();
             this.HashScalar(IonType.Blob, byteList);
             this.writer.WriteBlob(value);
         }
@@ -153,7 +153,7 @@
 
         public void WriteClob(ReadOnlySpan<byte> value)
         {
-            List<byte> byteList = new List<byte>(value.ToArray());
+            byte[] byteList = value.ToArray();
             this.HashScalar(IonType.Clob, byteList);
             this.writer.WriteClob(value);
         }
@@ -301,7 +301,7 @@
                         this.StepIn(IonType.Struct);
                         break;
                     default:
-                        throw new IonHashException("Unexpected type '" + type + "'");
+                        throw new InvalidOperationException("Unexpected type '" + type + "'");
                 }
 
                 if (type.IsContainer())
