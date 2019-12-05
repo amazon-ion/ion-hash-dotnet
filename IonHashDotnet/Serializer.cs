@@ -2,30 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-<<<<<<< HEAD
     using System.IO;
     using System.Linq;
-=======
->>>>>>> Private functions handling annotations
     using IonDotnet;
     using IonDotnet.Systems;
 
     internal class Serializer
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        private bool hasContainerAnnotation;
-=======
         private bool hasContainerAnnotation = false;
->>>>>>> initial commit
-=======
-
-        private bool hasContainerAnnotation;
->>>>>>> Private functions handling annotations
-=======
-        private bool hasContainerAnnotation = false;
->>>>>>> initial commit
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
@@ -33,16 +17,8 @@
             this.Depth = depth;
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         internal int Depth { get; }
 
-=======
->>>>>>> Private functions handling annotations
-=======
-        internal int Depth { get; }
-
->>>>>>> initial commit
         internal IIonHasher HashFunction { get; private set; }
 
         internal void Scalar(IIonValue ionValue)
@@ -177,7 +153,6 @@
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-<<<<<<< HEAD
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
             (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
@@ -188,9 +163,6 @@
             }
 
             this.EndMarker();
-=======
-            var scalarBytes = this.GetBytes(IonType.Symbol, token, false);
->>>>>>> Private functions handling annotations
         }
 
         private byte[] GetBytes(IonType type, dynamic value, bool isNull)
