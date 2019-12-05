@@ -9,11 +9,19 @@
 
     internal class Serializer
     {
+<<<<<<< HEAD
         private bool hasContainerAnnotation;
+=======
+        private bool hasContainerAnnotation = false;
+>>>>>>> initial commit
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
+            this.HashFunction = hashFunction;
+            this.Depth = depth;
         }
+
+        internal int Depth { get; }
 
         internal IIonHasher HashFunction { get; private set; }
 
