@@ -23,42 +23,72 @@
 
         internal void Scalar(IIonValue ionValue)
         {
-            throw new NotImplementedException();
+            this.HandleAnnotationsBegin(ionValue);
+            this.BeginMarker();
+            byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValue.Value, ionValue.IsNull);
+            byte[][] tqAndRepresentation = this.ScalarOrNullSplitParts(ionValue.Type, ionValue.IsNull, scalarBytes);
+            this.Update(tqAndRepresentation[0]);
+            if (tqAndRepresentation[1].Length > 0)
+            {
+                this.Update(Utils.Escape(tqAndRepresentation[1]));
+            }
+
+            this.EndMarker();
+            this.HandleAnnotationsEnd(ionValue);
         }
 
         internal void StepIn(IIonValue ionValue)
         {
-            throw new NotImplementedException();
+            this.HandleFieldName(ionValue.FieldName);
+            this.HandleAnnotationsBegin(ionValue, true);
+            this.BeginMarker();
+            //var tq = tq()
         }
 
         internal void StepOut()
         {
-            throw new NotImplementedException();
+            this.EndMarker();
+            this.HandleAnnotationsEnd(null, true);
         }
 
         internal byte[] Digest()
         {
-            throw new NotImplementedException();
+            this.HashFunction.TransformFinalBlock(new byte[0], 0, 0);
+            return this.HashFunction.Hash;
         }
 
         internal void HandleFieldName(string fieldName)
         {
-            throw new NotImplementedException();
+            // the "!= null" condition allows the empty symbol to be written
+            if (fieldName != null && this.Depth > 0)
+            {
+                this.WriteSymbol(fieldName);
+            }
         }
 
         protected void Update(byte[] bytes)
         {
-            throw new NotImplementedException();
+            this.HashFunction.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
         }
 
         protected void BeginMarker()
         {
-            throw new NotImplementedException();
+            this.HashFunction.TransformBlock(
+                Constants.BeginMarker,
+                0,
+                Constants.BeginMarker.Length,
+                Constants.BeginMarker,
+                0);
         }
 
         protected void EndMarker()
         {
-            throw new NotImplementedException();
+            this.HashFunction.TransformBlock(
+                Constants.EndMarker,
+                0,
+                Constants.EndMarker.Length,
+                Constants.EndMarker,
+                0);
         }
 
         private static void Serializers(IonType type, dynamic value, IIonWriter writer)
