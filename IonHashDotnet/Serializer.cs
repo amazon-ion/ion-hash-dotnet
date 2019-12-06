@@ -141,7 +141,7 @@
             this.Update(new byte[] { tuple.tq });
             if (tuple.representation.Length > 0)
             {
-                this.Update(Escape(tuple.Item2));
+                this.Update(Escape(tuple.representation));
             }
 
             this.EndMarker();
