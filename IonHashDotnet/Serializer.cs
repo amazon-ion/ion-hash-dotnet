@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using IonDotnet;
+    using IonDotnet.Systems;
 
     internal class Serializer
     {
-
         private bool hasContainerAnnotation;
 
         internal Serializer(IIonHasher hashFunction, int depth)
@@ -94,6 +96,11 @@
             }
         }
 
+        private static byte[] Escape(byte[] bytes)
+        {
+            throw new NotImplementedException();
+        }
+
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
         {
             IList<SymbolToken> annotations = ionValue.Annotations;
@@ -128,22 +135,84 @@
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            var scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+            (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
+
+            this.Update(new byte[] { tuple.tq });
+            if (tuple.representation.Length > 0)
+            {
+                this.Update(Escape(tuple.representation));
+            }
+
+            this.EndMarker();
         }
 
         private byte[] GetBytes(IonType type, dynamic value, bool isNull)
         {
-            throw new NotImplementedException();
+            if (isNull)
+            {
+                // https://github.com/amzn/ion-dotnet/issues/13
+                throw new NotImplementedException();
+            }
+            else
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream))
+                    {
+                        Serializers(type, value, writer);
+                    }
+
+                    return stream.ToArray().Skip(4).ToArray();
+                }
+            }
         }
 
         private int GetLengthLength(byte[] bytes)
         {
-            throw new NotImplementedException();
+            if ((bytes[0] & 0x0F) == 0x0E)
+            {
+                // read subsequent byte(s) as the "length" field
+                for (var i = 0; i < bytes.Length; i++)
+                {
+                    if ((bytes[i] & 0x80) != 0)
+                    {
+                        return i;
+                    }
+                }
+
+                throw new IonHashException("Problem while reading VarUInt!");
+            }
+
+            return 0;
         }
 
-        private byte[][] ScalarOrNullSplitParts(IonType type, bool isNull, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, bool isNull, byte[] bytes)
         {
-            throw new NotImplementedException();
+            int offset = this.GetLengthLength(bytes) + 1;
+
+            // the representation is everything after TL (first byte) and length
+            byte[] representation = bytes.Skip(offset).ToArray();
+            byte tq = bytes[0];
+
+            if (type == IonType.Symbol)
+            {
+                // symbols are serialized as strings; use the correct TQ:
+                tq = 0x70;
+                if (isNull)
+                {
+                    tq |= 0x0F;
+                }
+            }
+
+            // not a bool, symbol, or null value
+            if (type != IonType.Bool && type != IonType.Symbol && (tq & 0x0F) != 0x0F)
+            {
+                // zero - out the L nibble
+                tq &= 0x0F;
+            }
+
+            return (tq, representation);
         }
     }
 }
