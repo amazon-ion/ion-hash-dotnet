@@ -17,7 +17,7 @@
             this.Depth = depth;
         }
 
-        internal int Depth { get; }
+        internal int Depth { get; private set; }
 
         internal IIonHasher HashFunction { get; private set; }
 
@@ -172,7 +172,7 @@
         private static byte TQ(IIonValue ionValue)
         {
             // https://github.com/amzn/ion-dotnet/issues/13
-            return (byte)((int)ionValue.Type << 4);
+            throw new NotImplementedException();
         }
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
