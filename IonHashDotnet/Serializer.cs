@@ -46,7 +46,13 @@
             this.HandleFieldName(ionValue.FieldName);
             this.HandleAnnotationsBegin(ionValue, true);
             this.BeginMarker();
-            //var tq = tq()
+            byte tq = TQ(ionValue);
+            if (ionValue.IsNull)
+            {
+                tq |= 0x0F;
+            }
+
+            this.Update(new byte[] { tq });
         }
 
         internal void StepOut()
@@ -161,6 +167,12 @@
             }
 
             return bytes;
+        }
+
+        private static byte TQ(IIonValue ionValue)
+        {
+            // https://github.com/amzn/ion-dotnet/issues/13
+            return (byte)((int)ionValue.Type << 4);
         }
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
