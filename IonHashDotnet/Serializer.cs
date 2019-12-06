@@ -26,11 +26,15 @@
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValue.Value, ionValue.IsNull);
-            byte[][] tqAndRepresentation = this.ScalarOrNullSplitParts(ionValue.Type, ionValue.IsNull, scalarBytes);
-            this.Update(tqAndRepresentation[0]);
-            if (tqAndRepresentation[1].Length > 0)
+            (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(
+                ionValue.Type,
+                ionValue.IsNull,
+                scalarBytes);
+
+            this.Update(new byte[] { tuple.tq });
+            if (tuple.representation.Length > 0)
             {
-                this.Update(Utils.Escape(tqAndRepresentation[1]));
+                this.Update(Escape(tuple.representation));
             }
 
             this.EndMarker();
@@ -132,21 +136,31 @@
 
         private static byte[] Escape(byte[] bytes)
         {
-            IList<SymbolToken> annotations = ionValue.Annotations;
-            if (annotations.Count > 0)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                this.BeginMarker();
-                this.Update(Constants.TqAnnotatedValue);
-                foreach (var annotation in annotations)
+                byte b = bytes[i];
+                if (b == Constants.BeginMarkerByte || b == Constants.EndMarkerByte || b == Constants.EscapeByte)
                 {
-                    this.WriteSymbol(annotation.Text);
-                }
+                    // found a byte that needs to be escaped; build a new byte array that
+                    // escapes that byte as well as any others
+                    List<byte> escapedBytes = new List<byte>();
 
-                if (isContainer)
-                {
-                    this.hasContainerAnnotation = true;
+                    for (int j = 0; j < bytes.Length; j++)
+                    {
+                        byte c = bytes[j];
+                        if (c == Constants.BeginMarkerByte || c == Constants.EndMarkerByte || c == Constants.EscapeByte)
+                        {
+                            escapedBytes.Add(Constants.EscapeByte);
+                        }
+
+                        escapedBytes.Add(c);
+                    }
+
+                    return escapedBytes.ToArray();
                 }
             }
+
+            return bytes;
         }
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
