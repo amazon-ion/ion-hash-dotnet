@@ -10,14 +10,13 @@
     internal class Serializer
     {
         private bool hasContainerAnnotation = false;
+        private int depth;
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
             this.HashFunction = hashFunction;
-            this.Depth = depth;
+            this.depth = depth;
         }
-
-        internal int Depth { get; private set; }
 
         internal IIonHasher HashFunction { get; private set; }
 
@@ -70,7 +69,7 @@
         internal void HandleFieldName(string fieldName)
         {
             // the "!= null" condition allows the empty symbol to be written
-            if (fieldName != null && this.Depth > 0)
+            if (fieldName != null && this.depth > 0)
             {
                 this.WriteSymbol(fieldName);
             }
@@ -283,7 +282,7 @@
             if (type != IonType.Bool && type != IonType.Symbol && (tq & 0x0F) != 0x0F)
             {
                 // zero - out the L nibble
-                tq &= 0x0F;
+                tq &= 0xF0;
             }
 
             return (tq, representation);
