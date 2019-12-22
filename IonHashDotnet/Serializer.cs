@@ -9,8 +9,8 @@
 
     internal class Serializer
     {
+        private readonly int depth;
         private bool hasContainerAnnotation = false;
-        private int depth;
 
         internal Serializer(IIonHasher hashFunction, int depth)
         {
@@ -20,20 +20,20 @@
 
         internal IIonHasher HashFunction { get; private set; }
 
-        internal void Scalar(IIonValue ionValue)
+        internal virtual void Scalar(IIonValue ionValue)
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValue.Value, ionValue.IsNull);
-            (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
                 ionValue.Type,
                 ionValue.IsNull,
                 scalarBytes);
 
-            this.Update(new byte[] { tuple.tq });
-            if (tuple.representation.Length > 0)
+            this.Update(new byte[] { tq });
+            if (representation.Length > 0)
             {
-                this.Update(Escape(tuple.representation));
+                this.Update(Escape(representation));
             }
 
             this.EndMarker();
@@ -54,7 +54,7 @@
             this.Update(new byte[] { tq });
         }
 
-        internal void StepOut()
+        internal virtual void StepOut()
         {
             this.EndMarker();
             this.HandleAnnotationsEnd(null, true);
@@ -75,12 +75,41 @@
             }
         }
 
-        protected void Update(byte[] bytes)
+        private protected static byte[] Escape(byte[] bytes)
+        {
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                byte b = bytes[i];
+                if (b == Constants.BeginMarkerByte || b == Constants.EndMarkerByte || b == Constants.EscapeByte)
+                {
+                    // found a byte that needs to be escaped; build a new byte array that
+                    // escapes that byte as well as any others
+                    List<byte> escapedBytes = new List<byte>();
+
+                    for (int j = 0; j < bytes.Length; j++)
+                    {
+                        byte c = bytes[j];
+                        if (c == Constants.BeginMarkerByte || c == Constants.EndMarkerByte || c == Constants.EscapeByte)
+                        {
+                            escapedBytes.Add(Constants.EscapeByte);
+                        }
+
+                        escapedBytes.Add(c);
+                    }
+
+                    return escapedBytes.ToArray();
+                }
+            }
+
+            return bytes;
+        }
+
+        private protected void Update(byte[] bytes)
         {
             this.HashFunction.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
         }
 
-        protected void BeginMarker()
+        private protected void BeginMarker()
         {
             this.HashFunction.TransformBlock(
                 Constants.BeginMarker,
@@ -90,7 +119,7 @@
                 0);
         }
 
-        protected void EndMarker()
+        private protected void EndMarker()
         {
             this.HashFunction.TransformBlock(
                 Constants.EndMarker,
@@ -139,39 +168,10 @@
             }
         }
 
-        private static byte[] Escape(byte[] bytes)
-        {
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                byte b = bytes[i];
-                if (b == Constants.BeginMarkerByte || b == Constants.EndMarkerByte || b == Constants.EscapeByte)
-                {
-                    // found a byte that needs to be escaped; build a new byte array that
-                    // escapes that byte as well as any others
-                    List<byte> escapedBytes = new List<byte>();
-
-                    for (int j = 0; j < bytes.Length; j++)
-                    {
-                        byte c = bytes[j];
-                        if (c == Constants.BeginMarkerByte || c == Constants.EndMarkerByte || c == Constants.EscapeByte)
-                        {
-                            escapedBytes.Add(Constants.EscapeByte);
-                        }
-
-                        escapedBytes.Add(c);
-                    }
-
-                    return escapedBytes.ToArray();
-                }
-            }
-
-            return bytes;
-        }
-
         private static byte TQ(IIonValue ionValue)
         {
-            // https://github.com/amzn/ion-dotnet/issues/13
-            throw new NotImplementedException();
+            byte typeCode = (byte)ionValue.Type.GetTypeCode();
+            return (byte)(typeCode << 4);
         }
 
         private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
@@ -209,12 +209,12 @@
         {
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
-            (byte tq, byte[] representation) tuple = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
-            this.Update(new byte[] { tuple.tq });
-            if (tuple.representation.Length > 0)
+            this.Update(new byte[] { tq });
+            if (representation.Length > 0)
             {
-                this.Update(Escape(tuple.representation));
+                this.Update(Escape(representation));
             }
 
             this.EndMarker();
@@ -224,8 +224,8 @@
         {
             if (isNull)
             {
-                // https://github.com/amzn/ion-dotnet/issues/13
-                throw new NotImplementedException();
+                byte typeCode = (byte)type.GetTypeCode();
+                return new byte[] { (byte)(typeCode << 4 | 0x0F) };
             }
             else
             {
