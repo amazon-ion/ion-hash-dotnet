@@ -1,4 +1,4 @@
-﻿namespace IonHashDotnet
+namespace IonHashDotnet
 {
     using System;
     using System.Collections.Generic;
