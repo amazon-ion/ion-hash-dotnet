@@ -50,30 +50,11 @@
                     byte bByte = b[i++];
                     if (!aByte.Equals(bByte))
                     {
-                        if (aByte - bByte < 0)
-                        {
-                            return -1;
-                        }
-                        else
-                        {
-                            return 1;
-                        }
+                        return aByte - bByte;
                     }
                 }
 
-                var lenDiff = a.Length - b.Length;
-                if (lenDiff < 0)
-                {
-                    return -1;
-                }
-                else if (lenDiff > 0)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
+                return a.Length - b.Length;
             }
         }
     }
