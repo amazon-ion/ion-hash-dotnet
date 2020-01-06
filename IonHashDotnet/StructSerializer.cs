@@ -47,11 +47,13 @@
                 while (i < a.Length && i < b.Length)
                 {
                     byte aByte = a[i];
-                    byte bByte = b[i++];
+                    byte bByte = b[i];
                     if (!aByte.Equals(bByte))
                     {
                         return aByte - bByte;
                     }
+                    
+                    i++;
                 }
 
                 return a.Length - b.Length;
