@@ -1,5 +1,6 @@
 ﻿namespace IonHashDotnet
 {
+    using System;
     using IonDotnet;
 
     public class IonHashWriterBuilder
@@ -31,6 +32,11 @@
 
         public IIonHashWriter Build()
         {
+            if (this.hasherProvider == null || this.writer == null)
+            {
+                throw new ArgumentNullException("The Writer and HasherProvider must not be null");
+            }
+
             return new IonHashWriter(this.writer, this.hasherProvider);
         }
     }
