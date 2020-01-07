@@ -4,33 +4,34 @@
     using System.IO;
     using IonDotnet;
     using IonDotnet.Systems;
-    using Xunit;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    [TestClass]
     public class IonHashWriterBuilderTest
     {
         private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
         private static readonly StringWriter sw = new StringWriter();
         private static readonly IIonWriter Writer = IonTextWriterBuilder.Build(sw);
 
-        [Fact]
+        [TestMethod]
         public void TestNullIonWriter()
         {
             var ihwb = IonHashWriterBuilder.Standard().WithHasherProvider(HasherProvider);
-            Assert.Throws<ArgumentNullException>(ihwb.Build);
+            Assert.ThrowsException<ArgumentNullException>(ihwb.Build);
         }
 
-        [Fact]
+        [TestMethod]
         public void TestNullHasherProvider()
         {
             var ihwb = IonHashWriterBuilder.Standard().WithWriter(Writer);
-            Assert.Throws<ArgumentNullException>(ihwb.Build);
+            Assert.ThrowsException<ArgumentNullException>(ihwb.Build);
         }
 
-        [Fact]
+        [TestMethod]
         public void TestHappyCase()
         {
             var ihr = IonHashWriterBuilder.Standard().WithHasherProvider(HasherProvider).WithWriter(Writer).Build();
-            Assert.NotNull(ihr);
+            Assert.IsNotNull(ihr);
         }
     }
 }
