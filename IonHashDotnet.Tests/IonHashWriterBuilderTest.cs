@@ -10,8 +10,7 @@
     public class IonHashWriterBuilderTest
     {
         private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
-        private static readonly StringWriter sw = new StringWriter();
-        private static readonly IIonWriter Writer = IonTextWriterBuilder.Build(sw);
+        private static readonly IIonWriter Writer = IonTextWriterBuilder.Build(new StringWriter());
 
         [TestMethod]
         public void TestNullIonWriter()
