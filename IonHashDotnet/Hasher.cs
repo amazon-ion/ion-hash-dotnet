@@ -6,9 +6,9 @@
 
     internal class Hasher
     {
-        private IIonHasherProvider hasherProvider;
+        private readonly IIonHasherProvider hasherProvider;
+        private readonly Stack<Serializer> hasherStack;
         private Serializer currentHasher;
-        private Stack<Serializer> hasherStack;
 
         internal Hasher(IIonHasherProvider hasherProvider)
         {
