@@ -1,34 +1,35 @@
-﻿namespace IonHashDotnet.Tests
+﻿namespace IonHashDotnet.MSTests
 {
     using System;
     using IonDotnet;
     using IonDotnet.Systems;
-    using Xunit;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    [TestClass]
     public class IonHashReaderBuilderTest
     {
         private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
         private static readonly IIonReader Reader = IonReaderBuilder.Build("");
 
-        [Fact]
+        [TestMethod]
         public void TestNullIonReader()
         {
             var ihrb = IonHashReaderBuilder.Standard().WithHasherProvider(HasherProvider);
-            Assert.Throws<ArgumentNullException>(ihrb.Build);
+            Assert.ThrowsException<ArgumentNullException>(ihrb.Build);
         }
 
-        [Fact]
+        [TestMethod]
         public void TestNullHasherProvider()
         {
             var ihrb = IonHashReaderBuilder.Standard().WithReader(Reader);
-            Assert.Throws<ArgumentNullException>(ihrb.Build);
+            Assert.ThrowsException<ArgumentNullException>(ihrb.Build);
         }
 
-        [Fact]
+        [TestMethod]
         public void TestHappyCase()
         {
             var ihr = IonHashReaderBuilder.Standard().WithHasherProvider(HasherProvider).WithReader(Reader).Build();
-            Assert.NotNull(ihr);
+            Assert.IsNotNull(ihr);
         }
     }
 }
