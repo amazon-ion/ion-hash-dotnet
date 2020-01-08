@@ -1,4 +1,4 @@
-﻿namespace IonHashDotnet.MSTests
+﻿namespace IonHashDotnet.Tests
 {
     using System;
     using IonDotnet;
