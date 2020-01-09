@@ -16,7 +16,7 @@
         private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
 
         [DataTestMethod]
-        [BigNaughtListOfStringsDataSource]
+        [BigNaughtyListOfStringsDataSource]
         public void Test(TestValue tv, string s)
         {
             IIonHashWriter HashWriter = null;
@@ -64,7 +64,7 @@
         }
 
         
-        public class BigNaughtListOfStringsDataSource : Attribute, ITestDataSource
+        public class BigNaughtyListOfStringsDataSource : Attribute, ITestDataSource
         {
             public IEnumerable<object[]> GetData(MethodInfo methodInfo)
             {
