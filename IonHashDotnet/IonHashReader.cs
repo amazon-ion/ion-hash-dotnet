@@ -6,7 +6,7 @@
     using System.Numerics;
     using IonDotnet;
 
-    internal class IonHashReader : IIonHashReader, IIonValue
+    internal class IonHashReader : IIonHashReader, IIonHashValue
     {
         private readonly IIonReader reader;
         private readonly Hasher hasher;
@@ -16,6 +16,32 @@
         {
             this.hasher = new Hasher(hasherProvider);
             this.reader = reader;
+        }
+
+        // implements IIonHashValue
+        public IList<SymbolToken> Annotations
+        {
+            get { return this.GetTypeAnnotations().ToList(); }
+        }
+
+        public string FieldName
+        {
+            get { return this.CurrentFieldName; }
+        }
+
+        public bool IsNull
+        {
+            get { return this.CurrentIsNull; }
+        }
+
+        public IonType Type
+        {
+            get { return this.CurrentType; }
+        }
+
+        public dynamic Value
+        {
+            get { return this.GetIonValue(); }
         }
 
         // implements IIonReader
@@ -42,32 +68,6 @@
         public int CurrentDepth
         {
             get { return this.reader.CurrentDepth; }
-        }
-
-        // implements IIonValue
-        public IList<SymbolToken> Annotations
-        {
-            get { return this.GetTypeAnnotations().ToList(); }
-        }
-
-        public string FieldName
-        {
-            get { return this.CurrentFieldName; }
-        }
-
-        public bool IsNull
-        {
-            get { return this.CurrentIsNull;  }
-        }
-
-        public IonType Type
-        {
-            get { return this.CurrentType; }
-        }
-
-        public dynamic Value
-        {
-            get { return this.GetIonValue(); }
         }
 
         // implements IIonHashReader

@@ -18,12 +18,12 @@
             this.hasherStack.Push(this.currentHasher);
         }
 
-        internal void Scalar(IIonValue ionValue)
+        internal void Scalar(IIonHashValue ionValue)
         {
             this.currentHasher.Scalar(ionValue);
         }
 
-        internal void StepIn(IIonValue ionValue)
+        internal void StepIn(IIonHashValue ionValue)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
             if (this.currentHasher is StructSerializer)
