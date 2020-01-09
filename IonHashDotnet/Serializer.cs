@@ -234,6 +234,7 @@
                     using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream))
                     {
                         Serializers(type, value, writer);
+                        writer.Finish();
                     }
 
                     return stream.ToArray().Skip(4).ToArray();
