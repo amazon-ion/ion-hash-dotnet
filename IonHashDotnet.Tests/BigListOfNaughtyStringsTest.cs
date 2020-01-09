@@ -16,7 +16,7 @@
         private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
 
         [DataTestMethod]
-        [CustomDataSource]
+        [BigNaughtListOfStringsDataSource]
         public void Test(TestValue tv, string s)
         {
             IIonHashWriter HashWriter = null;
@@ -59,12 +59,12 @@
                 TestUtil.AssertEquals(
                     HashWriter.Digest(),
                     HashReader.Digest(),
-                    "Reader/writer hashs for line |" + tv.AsIon() + "| as |" + s + "| don't match");
+                    "Reader/writer hashes for line |" + tv.AsIon() + "| as |" + s + "| don't match");
             }
         }
 
-
-        public class CustomDataSourceAttribute : Attribute, ITestDataSource
+        
+        public class BigNaughtListOfStringsDataSource : Attribute, ITestDataSource
         {
             public IEnumerable<object[]> GetData(MethodInfo methodInfo)
             {
