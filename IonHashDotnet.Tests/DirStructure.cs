@@ -28,6 +28,5 @@
             var testDatDir = IonHashTestDir();
             return new FileInfo(Path.Combine(testDatDir.FullName, relativePath));
         }
-
     }
 }
