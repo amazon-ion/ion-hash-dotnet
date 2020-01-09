@@ -5,7 +5,7 @@
     using System.Numerics;
     using IonDotnet;
 
-    internal class IonHashWriter : IIonHashWriter, IIonValue
+    internal class IonHashWriter : IIonHashWriter, IIonHashValue
     {
         private readonly IIonWriter writer;
         private readonly Hasher hasher;
@@ -17,7 +17,7 @@
             this.Annotations = new List<SymbolToken>();
         }
 
-        // implements IIonValue
+        // implements IIonHashValue
         public IList<SymbolToken> Annotations
         {
             get;

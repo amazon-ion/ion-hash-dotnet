@@ -1,8 +1,8 @@
-﻿namespace IonHashDotnet.MSTests
+﻿namespace IonHashDotnet.Tests
 {
     using System;
     using IonDotnet;
-    using IonDotnet.Systems;
+    using IonDotnet.Builders;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

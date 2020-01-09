@@ -1,11 +1,11 @@
-namespace IonHashDotnet
+﻿namespace IonHashDotnet
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using IonDotnet;
-    using IonDotnet.Systems;
+    using IonDotnet.Builders;
 
     internal class Serializer
     {
@@ -20,7 +20,7 @@ namespace IonHashDotnet
 
         internal IIonHasher HashFunction { get; private set; }
 
-        internal virtual void Scalar(IIonValue ionValue)
+        internal virtual void Scalar(IIonHashValue ionValue)
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
@@ -40,7 +40,7 @@ namespace IonHashDotnet
             this.HandleAnnotationsEnd(ionValue);
         }
 
-        internal void StepIn(IIonValue ionValue)
+        internal void StepIn(IIonHashValue ionValue)
         {
             this.HandleFieldName(ionValue.FieldName);
             this.HandleAnnotationsBegin(ionValue, true);
@@ -168,13 +168,13 @@ namespace IonHashDotnet
             }
         }
 
-        private static byte TQ(IIonValue ionValue)
+        private static byte TQ(IIonHashValue ionValue)
         {
             byte typeCode = (byte)ionValue.Type.GetTypeCode();
             return (byte)(typeCode << 4);
         }
 
-        private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
+        private void HandleAnnotationsBegin(IIonHashValue ionValue, bool isContainer = false)
         {
             IList<SymbolToken> annotations = ionValue.Annotations;
             if (annotations.Count > 0)
@@ -193,7 +193,7 @@ namespace IonHashDotnet
             }
         }
 
-        private void HandleAnnotationsEnd(IIonValue ionValue, bool isContainer = false)
+        private void HandleAnnotationsEnd(IIonHashValue ionValue, bool isContainer = false)
         {
             if ((ionValue != null && ionValue.Annotations.Count > 0) || (isContainer && this.hasContainerAnnotation))
             {
