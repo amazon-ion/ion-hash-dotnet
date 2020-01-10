@@ -17,24 +17,15 @@
             }
         }
 
-        public byte[] Hash
+        public void Update(byte[] bytes)
         {
-            get { return this.hashAlgorithm.Hash; }
+            this.hashAlgorithm.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
         }
 
-        public int TransformBlock(
-            byte[] inputBuffer,
-            int inputOffset,
-            int inputCount,
-            byte[] outputBuffer,
-            int outputOffset)
+        public byte[] Digest()
         {
-            return this.hashAlgorithm.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
-        }
-
-        public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-        {
-            return this.hashAlgorithm.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+            this.hashAlgorithm.TransformFinalBlock(new byte[0], 0, 0);
+            return this.hashAlgorithm.Hash;
         }
     }
 }

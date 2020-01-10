@@ -62,8 +62,7 @@
 
         internal byte[] Digest()
         {
-            this.HashFunction.TransformFinalBlock(new byte[0], 0, 0);
-            return this.HashFunction.Hash;
+            return this.HashFunction.Digest();
         }
 
         internal void HandleFieldName(string fieldName)
@@ -106,27 +105,17 @@
 
         private protected void Update(byte[] bytes)
         {
-            this.HashFunction.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
+            this.HashFunction.Update(bytes);
         }
 
         private protected void BeginMarker()
         {
-            this.HashFunction.TransformBlock(
-                Constants.BeginMarker,
-                0,
-                Constants.BeginMarker.Length,
-                Constants.BeginMarker,
-                0);
+            this.HashFunction.Update(Constants.BeginMarker);
         }
 
         private protected void EndMarker()
         {
-            this.HashFunction.TransformBlock(
-                Constants.EndMarker,
-                0,
-                Constants.EndMarker.Length,
-                Constants.EndMarker,
-                0);
+            this.HashFunction.Update(Constants.EndMarker);
         }
 
         private static void Serializers(IonType type, dynamic value, IIonWriter writer)
