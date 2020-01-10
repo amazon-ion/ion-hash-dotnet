@@ -7,7 +7,7 @@
     using System.Reflection;
     using System.Text;
     using IonDotnet;
-    using IonDotnet.Systems;
+    using IonDotnet.Builders;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -85,7 +85,7 @@
                             }
                             TestValue tv = new TestValue(line);
 
-                            List.Add(new Object[] { tv, tv.AsSymbol() });
+                            List.Add(new object[] { tv, tv.AsSymbol() });
                             List.Add(new object[] { tv, tv.AsString() });
                             List.Add(new object[] { tv, tv.AsLongString() });
                             List.Add(new object[] { tv, tv.AsClob() });

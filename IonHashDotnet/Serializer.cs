@@ -155,7 +155,7 @@
                     writer.WriteString(value);
                     break;
                 case IonType.Symbol:
-                    writer.WriteSymbol(value);
+                    writer.WriteSymbolToken(value);
                     break;
                 case IonType.Timestamp:
                     writer.WriteTimestamp(value);
