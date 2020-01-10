@@ -2,13 +2,8 @@
 {
     public interface IIonHasher
     {
-        byte[] Hash
-        {
-            get;
-        }
+        void Update(byte[] bytes);
 
-        int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset);
-
-        byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount);
+        byte[] Digest();
     }
 }
