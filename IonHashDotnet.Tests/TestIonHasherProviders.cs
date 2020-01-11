@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using IonDotnet;
 using IonDotnet.Tree;
 using IonDotnet.Tree.Impl;
@@ -7,6 +8,8 @@ namespace IonHashDotnet.Tests
 {
     internal class TestIonHasherProviders
     {
+        private static readonly ValueFactory valueFactory = new ValueFactory();
+
         private static TestIonHasherProvider GetInstance(string algorithm)
         {
             if (algorithm.Equals("identity"))
@@ -19,24 +22,23 @@ namespace IonHashDotnet.Tests
             }
         }
 
+        public static void AddHashToLog(IIonValue hashLog, string method, byte[] hash)
+        {
+            var node = valueFactory.NewEmptySexp();
+            node.AddTypeAnnotation(new SymbolToken(method, SymbolToken.UnknownSid));
+            foreach (byte b in hash)
+            {
+                node.Add(valueFactory.NewInt(b & 0xFF));
+            }
+
+            hashLog.Add(node);
+        }
+
         internal abstract class TestIonHasherProvider : IIonHasherProvider
         {
-            private static readonly ValueFactory valueFactory = new ValueFactory();
-            private readonly IIonValue hashLog = valueFactory.NewEmptySexp();
+            private protected readonly IIonValue hashLog = valueFactory.NewEmptySexp();
 
             public abstract IIonHasher NewHasher();
-
-            public void AddHashToLog(string method, byte[] hash)
-            {
-                var node = valueFactory.NewEmptySexp();
-                node.AddTypeAnnotation(new SymbolToken(method, SymbolToken.UnknownSid));
-                foreach (byte b in hash)
-                {
-                    node.Add(valueFactory.NewInt(b & 0xFF));
-                }
-
-                hashLog.Add(node);
-            }
 
             public IIonValue GetHashLog()
             {
@@ -48,21 +50,32 @@ namespace IonHashDotnet.Tests
         {
             public override IIonHasher NewHasher()
             {
-                return new IdentityIonHasher();
+                return new IdentityIonHasher(this.hashLog);
             }
 
             private class IdentityIonHasher : IIonHasher
             {
-                public byte[] Hash => throw new NotImplementedException();
+                IIonValue hashLog;
+                byte[] identityHash;
 
-                public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+                public IdentityIonHasher(IIonValue hashLog)
                 {
-                    throw new NotImplementedException();
+                    this.hashLog = hashLog;
+                    identityHash = new byte[0];
                 }
 
-                public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+                public void Update(byte[] bytes)
                 {
-                    throw new NotImplementedException();
+                    AddHashToLog(hashLog, "update", bytes);
+                    this.identityHash = this.identityHash.Concat(bytes).ToArray();
+                }
+
+                public byte[] Digest()
+                {
+                    byte[] bytes = this.identityHash;
+                    this.identityHash = new byte[0];
+                    AddHashToLog(this.hashLog, "digest", bytes);
+                    return bytes;
                 }
             }
         }
@@ -78,26 +91,29 @@ namespace IonHashDotnet.Tests
 
             public override IIonHasher NewHasher()
             {
-                return new DefaultTestIonHasher(algorithm);
+                return new DefaultTestIonHasher(this.algorithm, this.hashLog);;
             }
 
-            private class DefaultTestIonHasher : IIonHasher
+            private class DefaultTestIonHasher : CryptoIonHasher
             {
-                public DefaultTestIonHasher(string algorithm)
-                {
+                IIonValue hashLog;
 
+                public DefaultTestIonHasher(string algorithm, IIonValue hashLog) : base(algorithm)
+                {
+                    this.hashLog = hashLog;
                 }
 
-                public byte[] Hash => throw new NotImplementedException();
-
-                public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+                public override void Update(byte[] bytes)
                 {
-                    throw new NotImplementedException();
+                    AddHashToLog(this.hashLog, "update", bytes);
+                    base.Update(bytes);
                 }
 
-                public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+                public override byte[] Digest()
                 {
-                    throw new NotImplementedException();
+                    byte[] hash = base.Digest();
+                    AddHashToLog(this.hashLog, "digest", hash);
+                    return hash;
                 }
             }
         }
