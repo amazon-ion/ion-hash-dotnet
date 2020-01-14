@@ -74,8 +74,13 @@
             }
         }
 
-        private protected static byte[] Escape(byte[] bytes)
+        internal static byte[] Escape(byte[] bytes)
         {
+            if (bytes == null)
+            {
+                return null;
+            }
+
             for (int i = 0; i < bytes.Length; i++)
             {
                 byte b = bytes[i];
