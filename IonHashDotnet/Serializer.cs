@@ -70,7 +70,7 @@
             // the "!= null" condition allows the empty symbol to be written
             if (fieldName != null && this.depth > 0)
             {
-                this.WriteSymbol(fieldName);
+                this.WriteSymbolToken(new SymbolToken(fieldName, SymbolToken.UnknownSid));
             }
         }
 
@@ -172,7 +172,7 @@
                 this.Update(Constants.TqAnnotatedValue);
                 foreach (var annotation in annotations)
                 {
-                    this.WriteSymbol(annotation.Text);
+                    this.WriteSymbolToken(new SymbolToken(annotation.Text, SymbolToken.UnknownSid));
                 }
 
                 if (isContainer)
@@ -194,7 +194,7 @@
             }
         }
 
-        private void WriteSymbol(string token)
+        private void WriteSymbolToken(SymbolToken token)
         {
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
