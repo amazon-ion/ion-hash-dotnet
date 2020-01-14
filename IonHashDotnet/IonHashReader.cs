@@ -219,6 +219,8 @@
                     return this.SymbolValue();
                 case IonType.Timestamp:
                     return this.TimestampValue();
+                case IonType.Null:
+                    return IonType.Null;
                 default:
                     throw new InvalidOperationException("Unexpected type '" + this.CurrentType + "'");
             }
