@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using IonDotnet;
@@ -10,11 +9,12 @@
     using IonDotnet.Tree;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
     public class IonHashDataSource : Attribute, ITestDataSource
     {
         public IEnumerable<object[]> GetData(MethodInfo methodInfo)
         {
+            var dataList = new List<object[]>();
+
             var loader = IonLoader.Default;
             var file = DirStructure.IonHashTestFile("ion_hash_tests.ion");
             var ionHashTests = loader.Load(file);
@@ -37,15 +37,28 @@
                 }
 
                 IIonValue expect = testCase.GetField("expect");
-                Debug.Write(expect.ToPrettyString());
+                var expectEnumerator = expect.GetEnumerator();
+                while (expectEnumerator.MoveNext())
+                {
+                    IIonValue expectedHashLog = expectEnumerator.Current;
+                    String hasherName = expectedHashLog.FieldNameSymbol.Text;
+
+                    object[] data = new object[] {
+                        hasherName.Equals("identity") ? testName : testName + "." + hasherName,
+                        testCase,
+                        expectedHashLog,
+                        TestIonHasherProvider.GetInstance(hasherName)
+                    };
+                    dataList.Add(data);
+                }
             }
 
-            return null;
+            return dataList;
         }
 
         public string GetDisplayName(MethodInfo methodInfo, object[] data)
         {
-            return methodInfo.Name;
+            return (string)data[0];
         }
     }
 }
