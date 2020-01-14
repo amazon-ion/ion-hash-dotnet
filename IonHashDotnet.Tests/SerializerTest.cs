@@ -1,6 +1,5 @@
 ﻿namespace IonHashDotnet.Tests
 {
-    using System;
     using IonHashDotnet;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
