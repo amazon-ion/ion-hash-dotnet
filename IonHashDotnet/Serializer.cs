@@ -150,7 +150,7 @@
                     writer.WriteTimestamp(value);
                     break;
                 case IonType.Null:
-                    writer.WriteNull(IonType.Null);
+                    writer.WriteNull(value);
                     break;
                 default:
                     throw new InvalidOperationException("Unexpected type '" + type + "'");
