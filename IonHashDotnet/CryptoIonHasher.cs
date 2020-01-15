@@ -17,12 +17,12 @@
             }
         }
 
-        public void Update(byte[] bytes)
+        public virtual void Update(byte[] bytes)
         {
             this.hashAlgorithm.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
         }
 
-        public byte[] Digest()
+        public virtual byte[] Digest()
         {
             this.hashAlgorithm.TransformFinalBlock(new byte[0], 0, 0);
             return this.hashAlgorithm.Hash;
