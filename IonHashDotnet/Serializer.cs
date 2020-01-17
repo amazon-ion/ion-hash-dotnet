@@ -6,6 +6,7 @@
     using System.Linq;
     using IonDotnet;
     using IonDotnet.Builders;
+    using IonDotnet.Internals.Binary;
 
     internal class Serializer
     {
@@ -224,8 +225,7 @@
         {
             if (isNull)
             {
-                byte typeCode = (byte)type.GetTypeCode();
-                return new byte[] { (byte)(typeCode << 4 | 0x0F) };
+                return new byte[] { BinaryConstants.GetNullByte(type) };
             }
             else
             {
