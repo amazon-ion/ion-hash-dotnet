@@ -26,7 +26,7 @@
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
 
-            dynamic ionValueValue = (ionValue.IsNull ? null : ionValue.Value;
+            dynamic ionValueValue = ionValue.IsNull ? null : ionValue.Value;
             byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValueValue, ionValue.IsNull);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
                 ionValue.Type,
