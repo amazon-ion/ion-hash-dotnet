@@ -261,6 +261,16 @@
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
+            if (type == IonType.Int && bytes.Length > offset)
+            {
+                // ignore sign byte prepended by BigInteger.toByteArray() when the magnitude
+                // ends at byte boundary (the 'intLength512' test is an example of this)
+                if ((bytes[offset] & 0xFF) == 0)
+                {
+                    offset++;
+                }
+            }
+
             // the representation is everything after TL (first byte) and length
             byte[] representation = bytes.Skip(offset).ToArray();
             byte tq = bytes[0];
