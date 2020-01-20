@@ -103,7 +103,7 @@
 
             IIonValue actualHashLog = testObject.GetHashLog();
             IIonValue actualHashLogFiltered = FilterHashLog(actualHashLog, expectedHashLog);
-            Assert.Equals(HashLogToString(expectedHashLog), HashLogToString(actualHashLogFiltered));
+            Assert.AreEqual(HashLogToString(expectedHashLog), HashLogToString(actualHashLogFiltered));
         }
 
         private static byte[] ContainerToBytes(IIonValue container)

@@ -6,6 +6,7 @@
     using System.Linq;
     using IonDotnet;
     using IonDotnet.Builders;
+    using IonDotnet.Internals.Binary;
 
     internal class Serializer
     {
@@ -24,7 +25,9 @@
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValue.Value, ionValue.IsNull);
+
+            dynamic ionValueValue = (!ionValue.IsNull) ? ionValue.Value : null;
+            byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValueValue, ionValue.IsNull);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
                 ionValue.Type,
                 ionValue.IsNull,
@@ -218,8 +221,7 @@
         {
             if (isNull)
             {
-                byte typeCode = (byte)type.GetTypeCode();
-                return new byte[] { (byte)(typeCode << 4 | 0x0F) };
+                return new byte[] { BinaryConstants.GetNullByte(type) };
             }
             else
             {
