@@ -167,7 +167,7 @@
 
         private static byte TQ(IIonHashValue ionValue)
         {
-            byte typeCode = (byte)ionValue.Type.GetTypeCode();
+            byte typeCode = (byte)ionValue.Type;
             return (byte)(typeCode << 4);
         }
 
