@@ -257,14 +257,7 @@
             }
         }
 
-        internal class DomTest : IonHashTester
-        {
-            internal override IIonReader GetIonReader(string ionText)
-            {
-                IValueFactory valueFactory = new ValueFactory();
-                return IonReaderBuilder.Build(valueFactory.NewString(ionText));
-            }
-        }
+        internal class DomTest : IonHashTester { }
 
         internal class TextTest : IonHashTester { }
 
