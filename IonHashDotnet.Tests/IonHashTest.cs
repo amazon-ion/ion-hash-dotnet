@@ -95,9 +95,17 @@
                 throw new Exception("Test must not define both 'ion' and '10n' fields");
             }
 
-            IIonReader reader = ionText != null
-                ? testObject.GetIonReader(ionText.ToPrettyString())
-                : testObject.GetIonReader(ContainerToBytes(ionBinary));
+            IIonReader reader;
+            if (ionText == null)
+            {
+                reader = testObject.GetIonReader(ContainerToBytes(ionBinary));
+            }
+            else
+            {
+                reader = testObject is DomTest
+                    ? testObject.GetIonReader(ionText)
+                    : testObject.GetIonReader(ionText.ToPrettyString());
+            }
 
             testObject.Traverse(reader, hasherProvider);
 
@@ -215,6 +223,10 @@
             internal virtual IIonReader GetIonReader(byte[] ionBinary)
             {
                 return IonReaderBuilder.Build(ionBinary);
+            }
+            internal virtual IIonReader GetIonReader(IIonValue ionValue)
+            {
+                return IonReaderBuilder.Build(ionValue);
             }
 
             internal virtual void Traverse(IIonReader reader, TestIonHasherProvider hasherProvider)
