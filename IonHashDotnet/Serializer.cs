@@ -223,8 +223,9 @@
             {
                 return new byte[] { BinaryConstants.GetNullByte(type) };
             }
-            else if (type == IonType.Float && value == 0)
+            else if (type == IonType.Float && value == 0 && BitConverter.DoubleToInt64Bits(value) > 0)
             {
+                // value is 0.0, not -0.0
                 return new byte[] { 0x40 };
             }
             else
