@@ -28,7 +28,6 @@
 
             dynamic ionValueValue = ionValue.IsNull ? null : ionValue.Value;
             byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValueValue, ionValue.IsNull);
-
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
                 ionValue.Type,
                 ionValue.IsNull,
@@ -237,6 +236,7 @@
                         Serializers(type, value, writer);
                         writer.Finish();
                     }
+
                     return stream.ToArray().Skip(4).ToArray();
                 }
             }
