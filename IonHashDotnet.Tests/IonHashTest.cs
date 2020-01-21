@@ -137,7 +137,6 @@
             if (methodCalls.Count == 1 && methodCalls.Contains("final_digest"))
             {
                 IIonValue finalDigest = actualHashLog.GetElementAt(actualHashLog.Count - 1);
-
                 finalDigest.ClearAnnotations();
                 finalDigest.AddTypeAnnotation("final_digest");
                 result.Add(finalDigest);
