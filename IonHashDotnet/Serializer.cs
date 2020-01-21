@@ -223,6 +223,10 @@
             {
                 return new byte[] { BinaryConstants.GetNullByte(type) };
             }
+            else if (type == IonType.Float && value == 0)
+            {
+                return new byte[] { 0x40 };
+            }
             else
             {
                 using (MemoryStream stream = new MemoryStream())
