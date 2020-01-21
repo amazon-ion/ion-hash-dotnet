@@ -137,6 +137,7 @@
             if (methodCalls.Count == 1 && methodCalls.Contains("final_digest"))
             {
                 IIonValue finalDigest = actualHashLog.GetElementAt(actualHashLog.Count - 1);
+                finalDigest.ClearAnnotations();
                 finalDigest.AddTypeAnnotation("final_digest");
                 result.Add(finalDigest);
             }
@@ -227,7 +228,8 @@
             internal virtual void Traverse(IIonHashReader reader)
             {
                 IonType iType;
-                while ((iType = reader.MoveNext()) != IonType.None) {
+                while ((iType = reader.MoveNext()) != IonType.None)
+                {
                     if (!reader.CurrentIsNull && IonTypeExtensions.IsContainer(iType))
                     {
                         reader.StepIn();
