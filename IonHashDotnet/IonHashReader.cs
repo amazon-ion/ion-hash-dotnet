@@ -216,7 +216,7 @@
                 case IonType.String:
                     return this.StringValue();
                 case IonType.Symbol:
-                    return this.SymbolValue();
+                    return this.StringValue();
                 case IonType.Timestamp:
                     return this.TimestampValue();
                 case IonType.Null:
