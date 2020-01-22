@@ -151,7 +151,7 @@
                     writer.WriteString(value);
                     break;
                 case IonType.Symbol:
-                    writer.WriteString(value);
+                    writer.WriteString(value.Text);
                     break;
                 case IonType.Timestamp:
                     writer.WriteTimestamp(value);
@@ -204,7 +204,7 @@
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, new SymbolToken(token, SymbolToken.UnknownSid), false);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
             this.Update(new byte[] { tq });
