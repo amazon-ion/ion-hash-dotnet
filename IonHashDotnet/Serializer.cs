@@ -205,7 +205,6 @@
         {
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
-
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
             this.Update(new byte[] { tq });
