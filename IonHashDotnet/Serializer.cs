@@ -72,7 +72,7 @@
             // the "!= null" condition allows the empty symbol to be written
             if (fieldName != null && this.depth > 0)
             {
-                this.WriteSymbolToken(new SymbolToken(fieldName, SymbolToken.UnknownSid));
+                this.WriteSymbol(fieldName);
             }
         }
 
@@ -151,7 +151,7 @@
                     writer.WriteString(value);
                     break;
                 case IonType.Symbol:
-                    writer.WriteSymbolToken(value);
+                    writer.WriteString(value);
                     break;
                 case IonType.Timestamp:
                     writer.WriteTimestamp(value);
@@ -179,7 +179,7 @@
                 this.Update(Constants.TqAnnotatedValue);
                 foreach (var annotation in annotations)
                 {
-                    this.WriteSymbolToken(new SymbolToken(annotation.Text, SymbolToken.UnknownSid));
+                    this.WriteSymbol(annotation.Text);
                 }
 
                 if (isContainer)
@@ -201,10 +201,11 @@
             }
         }
 
-        private void WriteSymbolToken(SymbolToken token)
+        private void WriteSymbol(string token)
         {
             this.BeginMarker();
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
             this.Update(new byte[] { tq });
@@ -223,7 +224,7 @@
                 byte typeCode = (byte)type;
                 return new byte[] { (byte)(typeCode << 4 | 0x0F) };
             }
-            else if (type == IonType.Float && value == 0 && BitConverter.DoubleToInt64Bits(value) > 0)
+            else if (type == IonType.Float && value == 0 && BitConverter.DoubleToInt64Bits(value) >= 0)
             {
                 // value is 0.0, not -0.0
                 return new byte[] { 0x40 };
@@ -232,7 +233,7 @@
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
-                    using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream))
+                    using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream, forceFloat64: true))
                     {
                         Serializers(type, value, writer);
                         writer.Finish();

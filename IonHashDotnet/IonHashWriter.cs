@@ -208,13 +208,13 @@
 
         public void WriteSymbol(string symbol)
         {
-            this.HashScalar(IonType.Symbol, new SymbolToken(symbol, SymbolToken.UnknownSid));
+            this.HashScalar(IonType.Symbol, symbol);
             this.writer.WriteSymbol(symbol);
         }
 
         public void WriteSymbolToken(SymbolToken symbolToken)
         {
-            this.HashScalar(IonType.Symbol, symbolToken);
+            this.HashScalar(IonType.Symbol, symbolToken.Text);
             this.writer.WriteSymbolToken(symbolToken);
         }
 
