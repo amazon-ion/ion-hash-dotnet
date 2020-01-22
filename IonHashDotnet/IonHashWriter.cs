@@ -208,7 +208,7 @@
 
         public void WriteSymbol(string symbol)
         {
-            this.HashScalar(IonType.Symbol, symbol);
+            this.HashScalar(IonType.Symbol, new SymbolToken(symbol, SymbolToken.UnknownSid));
             this.writer.WriteSymbol(symbol);
         }
 
