@@ -264,8 +264,8 @@
                 IValueFactory valueFactory = new ValueFactory();
                 MemoryStream ms = new MemoryStream();
                 IIonWriter writer = IonBinaryWriterBuilder.Build(ms);
-                IIonValue ionString = valueFactory.NewString(ionText);
-                ionString.WriteTo(writer);
+                IIonReader reader = IonReaderBuilder.Build(ionText);
+                writer.WriteValues(reader);
                 writer.Flush();
                 return IonReaderBuilder.Build(ms.ToArray());
             }
