@@ -39,7 +39,7 @@
             this.fieldHashes.Add(digest);
         }
 
-        private class DigestComparer : IComparer<byte[]>
+        internal class DigestComparer : IComparer<byte[]>
         {
             public int Compare(byte[] a, byte[] b)
             {
