@@ -280,7 +280,7 @@
                         this.WriteTimestamp(reader.TimestampValue());
                         break;
                     case IonType.Symbol:
-                        this.WriteSymbol(reader.StringValue());
+                        this.WriteSymbolToken(reader.SymbolValue());
                         break;
                     case IonType.String:
                         this.WriteString(reader.StringValue());
