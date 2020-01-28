@@ -14,7 +14,7 @@
                 IonType t1 = it1.CurrentType;
                 IonType t2 = it2.CurrentType;
 
-                if ((t1 != t2) && (t1 == IonType.None || t2 == IonType.None || !t1.Equals(t2)))
+                if (t1 != t2 && !t1.Equals(t2))
                 {
                     Assert.AreEqual(t1, t2, "ion type");
                 }

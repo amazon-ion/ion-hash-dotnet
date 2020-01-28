@@ -114,7 +114,7 @@
             Assert.AreEqual(HashLogToString(expectedHashLog), HashLogToString(actualHashLogFiltered));
         }
 
-        private static byte[] ContainerToBytes(IIonValue container)
+        internal static byte[] ContainerToBytes(IIonValue container)
         {
             List<byte> bytes = new List<byte>();
             bytes.AddRange(new byte[]{0xE0, 0x01, 0x00, 0xEA});
