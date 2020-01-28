@@ -18,11 +18,11 @@
         {
             // coverage for Digest(), IsInStruct, SetFieldName(), AddTypeAnnotation()
             StringWriter stringWriter = new StringWriter();
-            IIonHashWriter ihw = IonHashWriterBuilder.
-                Standard().
-                WithHasherProvider(new IdentityIonHasherProvider()).
-                WithWriter(IonTextWriterBuilder.Build(stringWriter)).
-                Build();
+            IIonHashWriter ihw = IonHashWriterBuilder
+                .Standard()
+                .WithHasherProvider(new IdentityIonHasherProvider())
+                .WithWriter(IonTextWriterBuilder.Build(stringWriter))
+                .Build();
 
             TestUtil.AssertEquals(new byte[] { }, ihw.Digest(), "Digest don't match.");
 
@@ -72,11 +72,11 @@
         [TestMethod]
         public void TestExtraStepOut()
         {
-            IIonHashWriter ihw = IonHashWriterBuilder.
-                Standard().
-                WithHasherProvider(new IdentityIonHasherProvider()).
-                WithWriter(IonTextWriterBuilder.Build(new StringWriter())).
-                Build();
+            IIonHashWriter ihw = IonHashWriterBuilder
+                .Standard()
+                .WithHasherProvider(new IdentityIonHasherProvider())
+                .WithWriter(IonTextWriterBuilder.Build(new StringWriter()))
+                .Build();
             Assert.ThrowsException<InvalidOperationException>(ihw.StepOut);
         }
 
@@ -110,11 +110,11 @@
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                IIonHashWriter writer = IonHashWriterBuilder.
-                    Standard().
-                    WithHasherProvider(new IdentityIonHasherProvider()).
-                    WithWriter(IonBinaryWriterBuilder.Build(memoryStream)).
-                    Build();
+                IIonHashWriter writer = IonHashWriterBuilder
+                    .Standard()
+                    .WithHasherProvider(new IdentityIonHasherProvider())
+                    .WithWriter(IonBinaryWriterBuilder.Build(memoryStream))
+                    .Build();
                 Assert.ThrowsException<UnknownSymbolException>(() => writer.WriteSymbolToken(symbolUnresolvedSid));
             }
         }
@@ -126,11 +126,11 @@
                 IIonWriter writer = IonBinaryWriterBuilder.Build(memoryStream);
                 if (useHashWriter)
                 {
-                    writer = IonHashWriterBuilder.
-                        Standard().
-                        WithHasherProvider(new IdentityIonHasherProvider()).
-                        WithWriter(writer).
-                        Build();
+                    writer = IonHashWriterBuilder
+                        .Standard()
+                        .WithHasherProvider(new IdentityIonHasherProvider())
+                        .WithWriter(writer)
+                        .Build();
                 }
                 lambda(reader, writer);
                 writer.Finish();
