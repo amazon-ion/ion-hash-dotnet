@@ -24,10 +24,10 @@
                 .WithWriter(IonTextWriterBuilder.Build(stringWriter))
                 .Build();
 
-            TestUtil.AssertEquals(new byte[] { }, ihw.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihw.Digest(), "Digests don't match.");
 
             ihw.WriteNull();
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0x0f, 0x0e }, ihw.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0x0f, 0x0e }, ihw.Digest(), "Digests don't match.");
 
             ihw.StepIn(IonType.List);
             Assert.ThrowsException<InvalidOperationException>(ihw.Digest);
@@ -36,10 +36,10 @@
             Assert.ThrowsException<InvalidOperationException>(ihw.Digest);
 
             ihw.StepOut();
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0xb0, 0x0b, 0x20, 0x05, 0x0e, 0x0e }, ihw.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0xb0, 0x0b, 0x20, 0x05, 0x0e, 0x0e }, ihw.Digest(), "Digests don't match.");
 
             ihw.WriteNull();
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0x0f, 0x0e }, ihw.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0x0f, 0x0e }, ihw.Digest(), "Digests don't match.");
 
             Assert.IsFalse(ihw.IsInStruct);
 
@@ -62,7 +62,7 @@
             0x0c, 0x0e,
             0x0e },
                 ihw.Digest(),
-                "Digest don't match.");
+                "Digests don't match.");
 
             ihw.Finish();
 
