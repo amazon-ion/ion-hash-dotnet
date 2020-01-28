@@ -167,7 +167,9 @@
                             decimal dec2 = bigDec2.ToDecimal();
                             Assert.AreEqual(dec1, dec2);
 
-                            // TODO also test double, long, int, etc.
+                            Assert.AreEqual(decimal.ToDouble(dec1), decimal.ToDouble(dec2));
+                            Assert.AreEqual(decimal.ToInt32(dec1), decimal.ToInt32(dec2));
+                            Assert.AreEqual(decimal.ToInt64(dec1), decimal.ToInt64(dec2));
                         }
 
                         break;

@@ -22,9 +22,9 @@
                 .Build();
 
             Assert.AreEqual(IonType.None, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
             Assert.AreEqual(IonType.None, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
         }
 
         [TestMethod]
@@ -37,19 +37,19 @@
                 .Build();
 
             Assert.AreEqual(IonType.Int, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
 
             Assert.AreEqual(IonType.Int, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x01, 0x0e }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x01, 0x0e }, ihr.Digest(), "Digests don't match.");
 
             Assert.AreEqual(IonType.Int, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x02, 0x0e }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x02, 0x0e }, ihr.Digest(), "Digests don't match.");
 
             Assert.AreEqual(IonType.None, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x03, 0x0e }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { 0x0b, 0x20, 0x03, 0x0e }, ihr.Digest(), "Digests don't match.");
 
             Assert.AreEqual(IonType.None, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@
             this.Consume((ihr) =>
             {
                 ihr.MoveNext();
-                TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+                TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
 
                 ihr.StepIn();
                 Assert.ThrowsException<InvalidOperationException>(ihr.Digest);
@@ -161,7 +161,7 @@
                 .WithHasherProvider(new IdentityIonHasherProvider())
                 .WithReader(IonReaderBuilder.Build("[1,2,{a:3,b:4},5]"))
                 .Build();
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
             lambda(ihr);
             TestUtil.AssertEquals(new byte[] { 0x0b, 0xb0,
                 0x0b, 0x20, 0x01, 0x0e,
@@ -171,10 +171,10 @@
                 0x0c, 0x0b, 0x70, 0x62, 0x0c, 0x0e, 0x0c, 0x0b, 0x20, 0x04, 0x0c, 0x0e,
                 0x0e,
                 0x0b, 0x20, 0x05, 0x0e,
-                0x0e}, ihr.Digest(), "Digest don't match.");
+                0x0e}, ihr.Digest(), "Digests don't match.");
 
             Assert.AreEqual(IonType.None, ihr.MoveNext());
-            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digest don't match.");
+            TestUtil.AssertEquals(new byte[] { }, ihr.Digest(), "Digests don't match.");
         }
     }
 }
