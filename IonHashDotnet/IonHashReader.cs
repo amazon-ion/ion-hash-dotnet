@@ -24,27 +24,11 @@
             get { return this.GetTypeAnnotations().ToList(); }
         }
 
-        public string FieldName
-        {
-            get { return this.CurrentFieldName; }
-        }
-
-        public bool IsNull
-        {
-            get { return this.CurrentIsNull; }
-        }
-
-        public IonType Type
-        {
-            get { return this.CurrentType; }
-        }
-
-        public dynamic Value
+        public dynamic CurrentValue
         {
             get { return this.GetIonValue(); }
         }
 
-        // implements IIonReader
         public IonType CurrentType
         {
             get { return this.reader.CurrentType; }
@@ -60,6 +44,7 @@
             get { return this.reader.CurrentIsNull; }
         }
 
+        // implements IIonReader
         public bool IsInStruct
         {
             get { return this.reader.IsInStruct; }

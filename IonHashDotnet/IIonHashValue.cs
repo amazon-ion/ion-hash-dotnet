@@ -10,22 +10,22 @@
             get;
         }
 
-        string FieldName
+        string CurrentFieldName
         {
             get;
         }
 
-        bool IsNull
+        bool CurrentIsNull
         {
             get;
         }
 
-        IonType Type
+        IonType CurrentType
         {
             get;
         }
 
-        dynamic Value
+        dynamic CurrentValue
         {
             get;
         }

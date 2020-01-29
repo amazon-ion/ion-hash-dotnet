@@ -59,11 +59,11 @@
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
 
-            dynamic ionValueValue = ionValue.IsNull ? null : ionValue.Value;
-            byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValueValue, ionValue.IsNull);
+            dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
+            byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
-                ionValue.Type,
-                ionValue.IsNull,
+                ionValue.CurrentType,
+                ionValue.CurrentIsNull,
                 scalarBytes);
 
             this.Update(new byte[] { tq });
@@ -78,11 +78,11 @@
 
         internal void StepIn(IIonHashValue ionValue)
         {
-            this.HandleFieldName(ionValue.FieldName);
+            this.HandleFieldName(ionValue.CurrentFieldName);
             this.HandleAnnotationsBegin(ionValue, true);
             this.BeginMarker();
             byte tq = TQ(ionValue);
-            if (ionValue.IsNull)
+            if (ionValue.CurrentIsNull)
             {
                 tq |= 0x0F;
             }
@@ -166,7 +166,7 @@
 
         private static byte TQ(IIonHashValue ionValue)
         {
-            byte typeCode = (byte)ionValue.Type;
+            byte typeCode = (byte)ionValue.CurrentType;
             return (byte)(typeCode << 4);
         }
 
