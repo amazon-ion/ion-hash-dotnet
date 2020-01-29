@@ -1,6 +1,6 @@
 language: csharp
 solution: IonHashDotnet.sln
-dotnet: 2.0
+dotnet: 2.1
 mono: none
 dist: xenial
 

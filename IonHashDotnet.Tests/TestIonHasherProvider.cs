@@ -87,7 +87,7 @@
 
         public override IIonHasher NewHasher()
         {
-            return new DefaultTestIonHasher(this.algorithm, this.hashLog); ;
+            return new DefaultTestIonHasher(this.algorithm, this.hashLog);
         }
 
         private class DefaultTestIonHasher : CryptoIonHasher

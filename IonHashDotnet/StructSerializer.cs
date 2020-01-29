@@ -17,7 +17,7 @@
 
         internal override void Scalar(IIonHashValue value)
         {
-            this.scalarSerializer.HandleFieldName(value.FieldName);
+            this.scalarSerializer.HandleFieldName(value.CurrentFieldName);
             this.scalarSerializer.Scalar(value);
             byte[] digest = this.scalarSerializer.Digest();
             this.AppendFieldHash(digest);

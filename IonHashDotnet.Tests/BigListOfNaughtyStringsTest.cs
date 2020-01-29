@@ -54,7 +54,7 @@
                 }
             }
 
-            if (tv.ValidIon == null || tv.ValidIon.Value == true)
+            if (tv.validIon == null || tv.validIon.Value == true)
             {
                 TestUtil.AssertEquals(
                     HashWriter.Digest(),
@@ -68,7 +68,7 @@
         {
             public IEnumerable<object[]> GetData(MethodInfo methodInfo)
             {
-                List<object[]> List = new List<object[]>();
+                List<object[]> list = new List<object[]>();
 
                 try
                 {
@@ -85,34 +85,34 @@
                             }
                             TestValue tv = new TestValue(line);
 
-                            List.Add(new object[] { tv, tv.AsSymbol() });
-                            List.Add(new object[] { tv, tv.AsString() });
-                            List.Add(new object[] { tv, tv.AsLongString() });
-                            List.Add(new object[] { tv, tv.AsClob() });
-                            List.Add(new object[] { tv, tv.AsBlob() });
+                            list.Add(new object[] { tv, tv.AsSymbol() });
+                            list.Add(new object[] { tv, tv.AsString() });
+                            list.Add(new object[] { tv, tv.AsLongString() });
+                            list.Add(new object[] { tv, tv.AsClob() });
+                            list.Add(new object[] { tv, tv.AsBlob() });
 
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsSymbol() });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsString() });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsLongString() });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsClob() });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsBlob() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsSymbol() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsString() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsLongString() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsClob() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsBlob() });
 
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsSymbol() + "}" });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsString() + "}" });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsLongString() + "}" });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsClob() + "}" });
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsBlob() + "}" });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsSymbol() + "}" });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsString() + "}" });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsLongString() + "}" });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsClob() + "}" });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsBlob() + "}" });
 
                             if (tv.IsValidIon())
                             {
-                                List.Add(new object[] { tv, tv.AsIon() });
-                                List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsIon() });
-                                List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsIon() + "}" });
-                                List.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsSymbol() + "::" + tv.AsIon() + "}" });
+                                list.Add(new object[] { tv, tv.AsIon() });
+                                list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsIon() });
+                                list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsIon() + "}" });
+                                list.Add(new object[] { tv, tv.AsSymbol() + "::{" + tv.AsSymbol() + ":" + tv.AsSymbol() + "::" + tv.AsIon() + "}" });
                             }
 
                             // list
-                            List.Add(new object[]
+                            list.Add(new object[]
                             {
                                 tv,
                                 tv.AsSymbol() + "::["
@@ -126,7 +126,7 @@
                             });
 
                             // sexp
-                            List.Add(new object[]
+                            list.Add(new object[]
                             {
                                 tv,
                                 tv.AsSymbol() + "::("
@@ -140,7 +140,7 @@
                             });
 
                             // multiple annotations
-                            List.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsSymbol() + "::" + tv.AsSymbol() + "::" + tv.AsString() });
+                            list.Add(new object[] { tv, tv.AsSymbol() + "::" + tv.AsSymbol() + "::" + tv.AsSymbol() + "::" + tv.AsString() });
 
                         }
                     }
@@ -150,16 +150,12 @@
                     Console.WriteLine("The file could not be read:");
                     Console.WriteLine(e.Message);
                 }
-                return List;
+                return list;
             }
-
 
             public string GetDisplayName(MethodInfo methodInfo, object[] data)
             {
-                if (data != null)
                 return string.Format(CultureInfo.CurrentCulture, "Custom - {0} ({1})", methodInfo.Name, string.Join(",", data[1]));
-
-                return null;
             }
         }
 
@@ -169,33 +165,33 @@
             private const string IonPrefix = "ion::";
             private const string InvalidIonPrefix = "invalid_ion::";
 
-            private string Ion;
-            internal bool? ValidIon;
+            private readonly string ion;
+            internal bool? validIon;
 
             internal TestValue(string ion)
             {
-                this.Ion = ion;
+                this.ion = ion;
 
-                if (this.Ion.StartsWith(IonPrefix))
+                if (this.ion.StartsWith(IonPrefix))
                 {
-                    ValidIon = true;
-                    this.Ion = this.Ion.Substring(IonPrefix.Length);
+                    validIon = true;
+                    this.ion = this.ion.Substring(IonPrefix.Length);
                 }
-                if (this.Ion.StartsWith(InvalidIonPrefix))
+                if (this.ion.StartsWith(InvalidIonPrefix))
                 {
-                    ValidIon = false;
-                    this.Ion = this.Ion.Substring(InvalidIonPrefix.Length);
+                    validIon = false;
+                    this.ion = this.ion.Substring(InvalidIonPrefix.Length);
                 }
             }
 
             internal string AsIon()
             {
-                return Ion;
+                return ion;
             }
 
             internal string AsSymbol()
             {
-                string s = Ion;
+                string s = ion;
                 s = s.Replace("\\", "\\\\");
                 s = s.Replace("'", "\\'");
                 s = "\'" + s + "\'";
@@ -204,7 +200,7 @@
 
             internal string AsString()
             {
-                string s = Ion;
+                string s = ion;
                 s = s.Replace("\\", "\\\\");
                 s = s.Replace("\"", "\\\"");
                 s = "\"" + s + "\"";
@@ -213,7 +209,7 @@
 
             internal string AsLongString()
             {
-                string s = Ion;
+                string s = ion;
                 s = s.Replace("\\", "\\\\");
                 s = s.Replace("'", "\\'");
                 return "'''" + s + "'''";
@@ -240,12 +236,12 @@
 
             internal string AsBlob()
             {
-                return "{{" + Convert.ToBase64String(Encoding.Default.GetBytes(Ion)) + "}}";
+                return "{{" + Convert.ToBase64String(Encoding.Default.GetBytes(ion)) + "}}";
             }
 
             internal bool IsValidIon()
             {
-                return ValidIon != null && ValidIon.Value;
+                return validIon != null && validIon.Value;
             }
         }
 

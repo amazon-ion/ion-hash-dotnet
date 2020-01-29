@@ -144,10 +144,13 @@
                         {
                             double v1 = it1.DoubleValue();
                             double v2 = it2.DoubleValue();
-                            if (!double.IsNaN(v1) && !double.IsNaN(v2))
+                            if (double.IsNaN(v1) || double.IsNaN(v2))
+                            {
+                                Assert.AreNotEqual(v1, v2, 0);
+                            }
+                            else
                             {
                                 Assert.AreEqual(v1, v2, 0);
-
                                 // The last param is a delta, and we want exact match.
                             }
                         }
@@ -243,11 +246,11 @@
             }
         }
 
-        /******** from IonAssert ********/
+        /******** from ion-java's IonAssert ********/
 
         private static void AssertSymbolEquals(string path, SymbolToken[] expecteds, SymbolToken[] actuals)
         {
-            Assert.AreEqual(expecteds.Length, actuals.Length, path + "count");
+            Assert.AreEqual(expecteds.Length, actuals.Length, path + " count");
 
             for (int i = 0; i < expecteds.Length; i++)
             {

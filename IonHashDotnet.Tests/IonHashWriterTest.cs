@@ -97,8 +97,8 @@
         public void TestIonWriterContractWriteValues()
         {
             IIonValue ionHashTests = loader.Load(file);
-            byte[] expected = ExerciseWriter(IonReaderBuilder.Build(ionHashTests), false, (r, w) => { r.MoveNext(); w.WriteValues(r); });
-            byte[] actual = ExerciseWriter(IonReaderBuilder.Build(ionHashTests), true, (r, w) => { r.MoveNext(); w.WriteValues(r); });
+            byte[] expected = ExerciseWriter(IonReaderBuilder.Build(ionHashTests), false, (r, w) => { w.WriteValues(r); });
+            byte[] actual = ExerciseWriter(IonReaderBuilder.Build(ionHashTests), true, (r, w) => { w.WriteValues(r); });
             Assert.IsTrue(expected.Length > 1000);
             Assert.IsTrue(actual.Length > 1000);
             TestUtil.AssertEquals(expected, actual, "Byte arrays mismatch.");

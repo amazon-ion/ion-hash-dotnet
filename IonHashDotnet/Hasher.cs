@@ -31,7 +31,7 @@
                 hashFunction = this.hasherProvider.NewHasher();
             }
 
-            if (ionValue.Type == IonType.Struct)
+            if (ionValue.CurrentType == IonType.Struct)
             {
                 this.currentHasher = new StructSerializer(hashFunction, this.Depth(), this.hasherProvider);
             }

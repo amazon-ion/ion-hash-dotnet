@@ -124,6 +124,7 @@
         [TestMethod]
         public void TestUnresolvedSid()
         {
+            // unresolved SIDs (such as SID 10 here) should result in an exception
             IIonValue ionContainer = loader.Load("(0xd3 0x8a 0x21 0x01)");
 
             byte[] ionBinary = IonHashTest.ContainerToBytes(ionContainer.GetElementAt(0));
