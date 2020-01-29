@@ -224,6 +224,7 @@
             {
                 return IonReaderBuilder.Build(ionBinary);
             }
+
             internal virtual IIonReader GetIonReader(IIonValue ionValue)
             {
                 return IonReaderBuilder.Build(ionValue);

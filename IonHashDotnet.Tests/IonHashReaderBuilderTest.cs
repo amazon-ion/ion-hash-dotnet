@@ -8,27 +8,27 @@
     [TestClass]
     public class IonHashReaderBuilderTest
     {
-        private static readonly IIonHasherProvider HasherProvider = new CryptoIonHasherProvider("SHA-256");
-        private static readonly IIonReader Reader = IonReaderBuilder.Build("");
+        private static readonly IIonHasherProvider hasherProvider = new CryptoIonHasherProvider("SHA-256");
+        private static readonly IIonReader reader = IonReaderBuilder.Build("");
 
         [TestMethod]
         public void TestNullIonReader()
         {
-            var ihrb = IonHashReaderBuilder.Standard().WithHasherProvider(HasherProvider);
+            var ihrb = IonHashReaderBuilder.Standard().WithHasherProvider(hasherProvider);
             Assert.ThrowsException<ArgumentNullException>(ihrb.Build);
         }
 
         [TestMethod]
         public void TestNullHasherProvider()
         {
-            var ihrb = IonHashReaderBuilder.Standard().WithReader(Reader);
+            var ihrb = IonHashReaderBuilder.Standard().WithReader(reader);
             Assert.ThrowsException<ArgumentNullException>(ihrb.Build);
         }
 
         [TestMethod]
         public void TestHappyCase()
         {
-            var ihr = IonHashReaderBuilder.Standard().WithHasherProvider(HasherProvider).WithReader(Reader).Build();
+            var ihr = IonHashReaderBuilder.Standard().WithHasherProvider(hasherProvider).WithReader(reader).Build();
             Assert.IsNotNull(ihr);
         }
     }
