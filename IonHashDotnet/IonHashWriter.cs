@@ -5,7 +5,7 @@
     using System.Numerics;
     using IonDotnet;
 
-    internal class IonHashWriter : IIonHashWriter, IIonValue
+    internal class IonHashWriter : IIonHashWriter, IIonHashValue
     {
         private readonly IIonWriter writer;
         private readonly Hasher hasher;
@@ -17,7 +17,7 @@
             this.Annotations = new List<SymbolToken>();
         }
 
-        // implements IIonValue
+        // implements IIonHashValue
         public IList<SymbolToken> Annotations
         {
             get;
@@ -208,13 +208,13 @@
 
         public void WriteSymbol(string symbol)
         {
-            this.HashScalar(IonType.Symbol, symbol);
+            this.HashScalar(IonType.Symbol, new SymbolToken(symbol, SymbolToken.UnknownSid));
             this.writer.WriteSymbol(symbol);
         }
 
         public void WriteSymbolToken(SymbolToken symbolToken)
         {
-            this.HashScalar(IonType.Symbol, symbolToken.Text);
+            this.HashScalar(IonType.Symbol, symbolToken);
             this.writer.WriteSymbolToken(symbolToken);
         }
 
@@ -280,7 +280,7 @@
                         this.WriteTimestamp(reader.TimestampValue());
                         break;
                     case IonType.Symbol:
-                        this.WriteSymbol(reader.StringValue());
+                        this.WriteSymbolToken(reader.SymbolValue());
                         break;
                     case IonType.String:
                         this.WriteString(reader.StringValue());

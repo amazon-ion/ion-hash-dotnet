@@ -15,7 +15,7 @@
             this.fieldHashes = new List<byte[]>();
         }
 
-        internal override void Scalar(IIonValue value)
+        internal override void Scalar(IIonHashValue value)
         {
             this.scalarSerializer.HandleFieldName(value.FieldName);
             this.scalarSerializer.Scalar(value);
@@ -39,7 +39,7 @@
             this.fieldHashes.Add(digest);
         }
 
-        private class DigestComparer : IComparer<byte[]>
+        internal class DigestComparer : IComparer<byte[]>
         {
             public int Compare(byte[] a, byte[] b)
             {
@@ -52,7 +52,7 @@
                     {
                         return aByte - bByte;
                     }
-                    
+
                     i++;
                 }
 
