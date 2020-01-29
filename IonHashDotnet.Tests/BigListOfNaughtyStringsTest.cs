@@ -19,14 +19,14 @@
         [BigNaughtyListOfStringsDataSource]
         public void Test(TestValue tv, string s)
         {
-            IIonHashWriter HashWriter = null;
+            IIonHashWriter hashWriter = null;
             try
             {
-                HashWriter = IonHashWriterBuilder.Standard()
+                hashWriter = IonHashWriterBuilder.Standard()
                     .WithWriter(IonTextWriterBuilder.Build(new StringWriter()))
                     .WithHasherProvider(HasherProvider)
                     .Build();
-                HashWriter.WriteValues(IonReaderBuilder.Build(s));
+                hashWriter.WriteValues(IonReaderBuilder.Build(s));
             }
             catch (IonException e)
             {
@@ -36,15 +36,15 @@
                 }
             }
 
-            IIonHashReader HashReader = null;
+            IIonHashReader hashReader = null;
             try
             {
-                HashReader = IonHashReaderBuilder.Standard()
+                hashReader = IonHashReaderBuilder.Standard()
                     .WithReader(IonReaderBuilder.Build(s))
                     .WithHasherProvider(HasherProvider)
                     .Build();
-                HashReader.MoveNext();
-                HashReader.MoveNext();
+                hashReader.MoveNext();
+                hashReader.MoveNext();
             }
             catch (IonException e)
             {
@@ -57,8 +57,8 @@
             if (tv.validIon == null || tv.validIon.Value == true)
             {
                 TestUtil.AssertEquals(
-                    HashWriter.Digest(),
-                    HashReader.Digest(),
+                    hashWriter.Digest(),
+                    hashReader.Digest(),
                     "Reader/writer hashes for line |" + tv.AsIon() + "| as |" + s + "| don't match");
             }
         }
