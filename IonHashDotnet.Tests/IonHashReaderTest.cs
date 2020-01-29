@@ -140,7 +140,7 @@
         [TestMethod]
         public void TestIonReaderContract()
         {
-            FileInfo file = DirStructure.IonHashTestFile("ion_hash_tests.ion");
+            FileInfo file = DirStructure.IonHashDotnetTestFile("ion_hash_tests.ion");
             IIonValue ionHashTests = loader.Load(file);
 
             IIonReader ir = IonReaderBuilder.Build(ionHashTests);

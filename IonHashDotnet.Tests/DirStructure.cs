@@ -23,9 +23,22 @@
                 root.FullName, "ion-hash-test"));
         }
 
+        public static DirectoryInfo IonHashDotnetTestDir()
+        {
+            var root = GetRootDir();
+            return new DirectoryInfo(Path.Combine(
+                root.FullName, "IonHashDotnet.Tests"));
+        }
+
         public static FileInfo IonHashTestFile(string relativePath)
         {
             var testDatDir = IonHashTestDir();
+            return new FileInfo(Path.Combine(testDatDir.FullName, relativePath));
+        }
+
+        public static FileInfo IonHashDotnetTestFile(string relativePath)
+        {
+            var testDatDir = IonHashDotnetTestDir();
             return new FileInfo(Path.Combine(testDatDir.FullName, relativePath));
         }
     }
