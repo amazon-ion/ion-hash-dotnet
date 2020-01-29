@@ -261,7 +261,6 @@
         {
             internal override IIonReader GetIonReader(string ionText)
             {
-                IValueFactory valueFactory = new ValueFactory();
                 MemoryStream ms = new MemoryStream();
                 IIonWriter writer = IonBinaryWriterBuilder.Build(ms);
                 IIonReader reader = IonReaderBuilder.Build(ionText);
