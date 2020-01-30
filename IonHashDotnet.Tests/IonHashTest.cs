@@ -88,24 +88,16 @@
                 return;
             }
 
-            IIonValue ionText = testCase.GetField("ion");
+            IIonValue ionValue = testCase.GetField("ion");
             IIonValue ionBinary = testCase.GetField("10n");
-            if (ionText != null && ionBinary != null)
+            if (ionValue != null && ionBinary != null)
             {
                 throw new Exception("Test must not define both 'ion' and '10n' fields");
             }
 
-            IIonReader reader;
-            if (ionText == null)
-            {
-                reader = testObject.GetIonReader(ContainerToBytes(ionBinary));
-            }
-            else
-            {
-                reader = testObject is DomTest
-                    ? testObject.GetIonReader(ionText)
-                    : testObject.GetIonReader(ionText.ToPrettyString());
-            }
+            var reader = ionValue == null
+                ? testObject.GetIonReader(ContainerToBytes(ionBinary))
+                : testObject.GetIonReader(ionValue);
 
             testObject.Traverse(reader, hasherProvider);
 
@@ -215,11 +207,6 @@
         {
             private protected TestIonHasherProvider hasherProvider;
 
-            internal virtual IIonReader GetIonReader(string ionText)
-            {
-                return IonReaderBuilder.Build(ionText);
-            }
-
             internal virtual IIonReader GetIonReader(byte[] ionBinary)
             {
                 return IonReaderBuilder.Build(ionBinary);
@@ -260,11 +247,11 @@
 
         internal class BinaryTest : IonHashTester
         {
-            internal override IIonReader GetIonReader(string ionText)
+            internal override IIonReader GetIonReader(IIonValue ionValue)
             {
                 MemoryStream ms = new MemoryStream();
                 IIonWriter writer = IonBinaryWriterBuilder.Build(ms);
-                IIonReader reader = IonReaderBuilder.Build(ionText);
+                IIonReader reader = IonReaderBuilder.Build(ionValue.ToPrettyString());
                 writer.WriteValues(reader);
                 writer.Flush();
                 return IonReaderBuilder.Build(ms.ToArray());
@@ -273,7 +260,13 @@
 
         internal class DomTest : IonHashTester { }
 
-        internal class TextTest : IonHashTester { }
+        internal class TextTest : IonHashTester
+        {
+            internal override IIonReader GetIonReader(IIonValue ionValue)
+            {
+                return IonReaderBuilder.Build(ionValue.ToPrettyString());
+            }
+        }
 
         internal class TextNoStepInTest : TextTest
         {
