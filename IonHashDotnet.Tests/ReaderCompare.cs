@@ -144,7 +144,11 @@
                         {
                             double v1 = it1.DoubleValue();
                             double v2 = it2.DoubleValue();
-                            if (double.IsNaN(v1) || double.IsNaN(v2))
+                            if (double.IsNaN(v1) && double.IsNaN(v2))
+                            {
+                                Assert.AreEqual(v1, v2);
+                            }
+                            else if (double.IsNaN(v1) || double.IsNaN(v2))
                             {
                                 Assert.AreNotEqual(v1, v2, 0);
                             }
