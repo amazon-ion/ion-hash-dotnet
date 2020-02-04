@@ -1,11 +1,11 @@
-namespace IonHashDotnet
+﻿namespace IonHashDotnet
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using IonDotnet;
-    using IonDotnet.Systems;
+    using IonDotnet.Builders;
 
     internal class Serializer
     {
@@ -20,63 +20,13 @@ namespace IonHashDotnet
 
         internal IIonHasher HashFunction { get; private set; }
 
-        internal virtual void Scalar(IIonValue ionValue)
+        internal static byte[] Escape(byte[] bytes)
         {
-            this.HandleAnnotationsBegin(ionValue);
-            this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(ionValue.Type, ionValue.Value, ionValue.IsNull);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
-                ionValue.Type,
-                ionValue.IsNull,
-                scalarBytes);
-
-            this.Update(new byte[] { tq });
-            if (representation.Length > 0)
+            if (bytes == null)
             {
-                this.Update(Escape(representation));
+                return null;
             }
 
-            this.EndMarker();
-            this.HandleAnnotationsEnd(ionValue);
-        }
-
-        internal void StepIn(IIonValue ionValue)
-        {
-            this.HandleFieldName(ionValue.FieldName);
-            this.HandleAnnotationsBegin(ionValue, true);
-            this.BeginMarker();
-            byte tq = TQ(ionValue);
-            if (ionValue.IsNull)
-            {
-                tq |= 0x0F;
-            }
-
-            this.Update(new byte[] { tq });
-        }
-
-        internal virtual void StepOut()
-        {
-            this.EndMarker();
-            this.HandleAnnotationsEnd(null, true);
-        }
-
-        internal byte[] Digest()
-        {
-            this.HashFunction.TransformFinalBlock(new byte[0], 0, 0);
-            return this.HashFunction.Hash;
-        }
-
-        internal void HandleFieldName(string fieldName)
-        {
-            // the "!= null" condition allows the empty symbol to be written
-            if (fieldName != null && this.depth > 0)
-            {
-                this.WriteSymbol(fieldName);
-            }
-        }
-
-        private protected static byte[] Escape(byte[] bytes)
-        {
             for (int i = 0; i < bytes.Length; i++)
             {
                 byte b = bytes[i];
@@ -104,29 +54,75 @@ namespace IonHashDotnet
             return bytes;
         }
 
+        internal virtual void Scalar(IIonHashValue ionValue)
+        {
+            this.HandleAnnotationsBegin(ionValue);
+            this.BeginMarker();
+
+            dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
+            byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
+                ionValue.CurrentType,
+                ionValue.CurrentIsNull,
+                scalarBytes);
+
+            this.Update(new byte[] { tq });
+            if (representation.Length > 0)
+            {
+                this.Update(Escape(representation));
+            }
+
+            this.EndMarker();
+            this.HandleAnnotationsEnd(ionValue);
+        }
+
+        internal void StepIn(IIonHashValue ionValue)
+        {
+            this.HandleFieldName(ionValue.CurrentFieldName);
+            this.HandleAnnotationsBegin(ionValue, true);
+            this.BeginMarker();
+            byte tq = TQ(ionValue);
+            if (ionValue.CurrentIsNull)
+            {
+                tq |= 0x0F;
+            }
+
+            this.Update(new byte[] { tq });
+        }
+
+        internal virtual void StepOut()
+        {
+            this.EndMarker();
+            this.HandleAnnotationsEnd(null, true);
+        }
+
+        internal byte[] Digest()
+        {
+            return this.HashFunction.Digest();
+        }
+
+        internal void HandleFieldName(string fieldName)
+        {
+            // the "!= null" condition allows the empty symbol to be written
+            if (fieldName != null && this.depth > 0)
+            {
+                this.WriteSymbol(fieldName);
+            }
+        }
+
         private protected void Update(byte[] bytes)
         {
-            this.HashFunction.TransformBlock(bytes, 0, bytes.Length, bytes, 0);
+            this.HashFunction.Update(bytes);
         }
 
         private protected void BeginMarker()
         {
-            this.HashFunction.TransformBlock(
-                Constants.BeginMarker,
-                0,
-                Constants.BeginMarker.Length,
-                Constants.BeginMarker,
-                0);
+            this.HashFunction.Update(Constants.BeginMarker);
         }
 
         private protected void EndMarker()
         {
-            this.HashFunction.TransformBlock(
-                Constants.EndMarker,
-                0,
-                Constants.EndMarker.Length,
-                Constants.EndMarker,
-                0);
+            this.HashFunction.Update(Constants.EndMarker);
         }
 
         private static void Serializers(IonType type, dynamic value, IIonWriter writer)
@@ -155,26 +151,26 @@ namespace IonHashDotnet
                     writer.WriteString(value);
                     break;
                 case IonType.Symbol:
-                    writer.WriteSymbol(value);
+                    writer.WriteString(value.Text);
                     break;
                 case IonType.Timestamp:
                     writer.WriteTimestamp(value);
                     break;
                 case IonType.Null:
-                    writer.WriteNull(IonType.Null);
+                    writer.WriteNull(value);
                     break;
                 default:
                     throw new InvalidOperationException("Unexpected type '" + type + "'");
             }
         }
 
-        private static byte TQ(IIonValue ionValue)
+        private static byte TQ(IIonHashValue ionValue)
         {
-            byte typeCode = (byte)ionValue.Type.GetTypeCode();
+            byte typeCode = (byte)ionValue.CurrentType;
             return (byte)(typeCode << 4);
         }
 
-        private void HandleAnnotationsBegin(IIonValue ionValue, bool isContainer = false)
+        private void HandleAnnotationsBegin(IIonHashValue ionValue, bool isContainer = false)
         {
             IList<SymbolToken> annotations = ionValue.Annotations;
             if (annotations.Count > 0)
@@ -193,7 +189,7 @@ namespace IonHashDotnet
             }
         }
 
-        private void HandleAnnotationsEnd(IIonValue ionValue, bool isContainer = false)
+        private void HandleAnnotationsEnd(IIonHashValue ionValue, bool isContainer = false)
         {
             if ((ionValue != null && ionValue.Annotations.Count > 0) || (isContainer && this.hasContainerAnnotation))
             {
@@ -208,7 +204,7 @@ namespace IonHashDotnet
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, token, false);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, new SymbolToken(token, SymbolToken.UnknownSid), false);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
 
             this.Update(new byte[] { tq });
@@ -224,16 +220,22 @@ namespace IonHashDotnet
         {
             if (isNull)
             {
-                byte typeCode = (byte)type.GetTypeCode();
+                byte typeCode = (byte)type;
                 return new byte[] { (byte)(typeCode << 4 | 0x0F) };
+            }
+            else if (type == IonType.Float && value == 0 && BitConverter.DoubleToInt64Bits(value) >= 0)
+            {
+                // value is 0.0, not -0.0
+                return new byte[] { 0x40 };
             }
             else
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
-                    using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream))
+                    using (IIonWriter writer = IonBinaryWriterBuilder.Build(stream, forceFloat64: true))
                     {
                         Serializers(type, value, writer);
+                        writer.Finish();
                     }
 
                     return stream.ToArray().Skip(4).ToArray();
@@ -246,7 +248,7 @@ namespace IonHashDotnet
             if ((bytes[0] & 0x0F) == 0x0E)
             {
                 // read subsequent byte(s) as the "length" field
-                for (var i = 0; i < bytes.Length; i++)
+                for (var i = 1; i < bytes.Length; i++)
                 {
                     if ((bytes[i] & 0x80) != 0)
                     {
@@ -263,6 +265,16 @@ namespace IonHashDotnet
         private (byte, byte[]) ScalarOrNullSplitParts(IonType type, bool isNull, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
+
+            if (type == IonType.Int && bytes.Length > offset)
+            {
+                // ignore sign byte prepended by BigInteger.toByteArray() when the magnitude
+                // ends at byte boundary (the 'intLength512' test is an example of this)
+                if ((bytes[offset] & 0xFF) == 0)
+                {
+                    offset++;
+                }
+            }
 
             // the representation is everything after TL (first byte) and length
             byte[] representation = bytes.Skip(offset).ToArray();

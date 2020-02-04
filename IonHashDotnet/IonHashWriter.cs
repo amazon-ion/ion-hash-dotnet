@@ -5,7 +5,7 @@
     using System.Numerics;
     using IonDotnet;
 
-    internal class IonHashWriter : IIonHashWriter, IIonValue
+    internal class IonHashWriter : IIonHashWriter, IIonHashValue
     {
         private readonly IIonWriter writer;
         private readonly Hasher hasher;
@@ -17,32 +17,32 @@
             this.Annotations = new List<SymbolToken>();
         }
 
-        // implements IIonValue
+        // implements IIonHashValue
         public IList<SymbolToken> Annotations
         {
             get;
             private set;
         }
 
-        public string FieldName
+        public dynamic CurrentValue
         {
             get;
             private set;
         }
 
-        public bool IsNull
+        public IonType CurrentType
         {
             get;
             private set;
         }
 
-        public IonType Type
+        public string CurrentFieldName
         {
             get;
             private set;
         }
 
-        public dynamic Value
+        public bool CurrentIsNull
         {
             get;
             private set;
@@ -100,13 +100,13 @@
 
         public void SetFieldName(string name)
         {
-            this.FieldName = name;
+            this.CurrentFieldName = name;
             this.writer.SetFieldName(name);
         }
 
         public void SetFieldNameSymbol(SymbolToken symbol)
         {
-            this.FieldName = symbol.Text;
+            this.CurrentFieldName = symbol.Text;
             this.writer.SetFieldNameSymbol(symbol);
         }
 
@@ -123,12 +123,12 @@
 
         public void StepIn(IonType type)
         {
-            this.Type = type;
-            this.Value = null;
-            this.IsNull = false;
+            this.CurrentType = type;
+            this.CurrentValue = null;
+            this.CurrentIsNull = false;
             this.hasher.StepIn(this);
             this.writer.StepIn(type);
-            this.FieldName = default;
+            this.CurrentFieldName = default;
             this.Annotations.Clear();
         }
 
@@ -208,13 +208,13 @@
 
         public void WriteSymbol(string symbol)
         {
-            this.HashScalar(IonType.Symbol, symbol);
+            this.HashScalar(IonType.Symbol, new SymbolToken(symbol, SymbolToken.UnknownSid));
             this.writer.WriteSymbol(symbol);
         }
 
         public void WriteSymbolToken(SymbolToken symbolToken)
         {
-            this.HashScalar(IonType.Symbol, symbolToken.Text);
+            this.HashScalar(IonType.Symbol, symbolToken);
             this.writer.WriteSymbolToken(symbolToken);
         }
 
@@ -280,7 +280,7 @@
                         this.WriteTimestamp(reader.TimestampValue());
                         break;
                     case IonType.Symbol:
-                        this.WriteSymbol(reader.StringValue());
+                        this.WriteSymbolToken(reader.SymbolValue());
                         break;
                     case IonType.String:
                         this.WriteString(reader.StringValue());
@@ -331,11 +331,11 @@
 
         private void HashScalar(IonType type, dynamic value)
         {
-            this.Type = type;
-            this.Value = value;
-            this.IsNull = value == null;
+            this.CurrentType = type;
+            this.CurrentValue = value;
+            this.CurrentIsNull = value == null;
             this.hasher.Scalar(this);
-            this.FieldName = default;
+            this.CurrentFieldName = default;
             this.Annotations.Clear();
         }
     }

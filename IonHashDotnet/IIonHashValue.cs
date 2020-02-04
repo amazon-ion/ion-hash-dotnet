@@ -3,30 +3,29 @@
     using System.Collections.Generic;
     using IonDotnet;
 
-    // TODO delete this interface once IonDotnet has IIonValue updated to interface
-    public interface IIonValue
+    internal interface IIonHashValue
     {
         IList<SymbolToken> Annotations
         {
             get;
         }
 
-        string FieldName
+        string CurrentFieldName
         {
             get;
         }
 
-        bool IsNull
+        bool CurrentIsNull
         {
             get;
         }
 
-        IonType Type
+        IonType CurrentType
         {
             get;
         }
 
-        dynamic Value
+        dynamic CurrentValue
         {
             get;
         }

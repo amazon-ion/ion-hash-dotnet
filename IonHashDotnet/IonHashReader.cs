@@ -6,7 +6,7 @@
     using System.Numerics;
     using IonDotnet;
 
-    internal class IonHashReader : IIonHashReader, IIonValue
+    internal class IonHashReader : IIonHashReader, IIonHashValue
     {
         private readonly IIonReader reader;
         private readonly Hasher hasher;
@@ -18,7 +18,17 @@
             this.reader = reader;
         }
 
-        // implements IIonReader
+        // implements IIonHashValue
+        public IList<SymbolToken> Annotations
+        {
+            get { return this.GetTypeAnnotations().ToList(); }
+        }
+
+        public dynamic CurrentValue
+        {
+            get { return this.GetIonValue(); }
+        }
+
         public IonType CurrentType
         {
             get { return this.reader.CurrentType; }
@@ -34,6 +44,7 @@
             get { return this.reader.CurrentIsNull; }
         }
 
+        // implements IIonReader
         public bool IsInStruct
         {
             get { return this.reader.IsInStruct; }
@@ -42,32 +53,6 @@
         public int CurrentDepth
         {
             get { return this.reader.CurrentDepth; }
-        }
-
-        // implements IIonValue
-        public IList<SymbolToken> Annotations
-        {
-            get { return this.GetTypeAnnotations().ToList(); }
-        }
-
-        public string FieldName
-        {
-            get { return this.CurrentFieldName; }
-        }
-
-        public bool IsNull
-        {
-            get { return this.CurrentIsNull;  }
-        }
-
-        public IonType Type
-        {
-            get { return this.CurrentType; }
-        }
-
-        public dynamic Value
-        {
-            get { return this.GetIonValue(); }
         }
 
         // implements IIonHashReader
@@ -219,6 +204,8 @@
                     return this.SymbolValue();
                 case IonType.Timestamp:
                     return this.TimestampValue();
+                case IonType.Null:
+                    return IonType.Null;
                 default:
                     throw new InvalidOperationException("Unexpected type '" + this.CurrentType + "'");
             }

@@ -6,9 +6,9 @@
 
     internal class Hasher
     {
-        private IIonHasherProvider hasherProvider;
+        private readonly IIonHasherProvider hasherProvider;
+        private readonly Stack<Serializer> hasherStack;
         private Serializer currentHasher;
-        private Stack<Serializer> hasherStack;
 
         internal Hasher(IIonHasherProvider hasherProvider)
         {
@@ -18,12 +18,12 @@
             this.hasherStack.Push(this.currentHasher);
         }
 
-        internal void Scalar(IIonValue ionValue)
+        internal void Scalar(IIonHashValue ionValue)
         {
             this.currentHasher.Scalar(ionValue);
         }
 
-        internal void StepIn(IIonValue ionValue)
+        internal void StepIn(IIonHashValue ionValue)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
             if (this.currentHasher is StructSerializer)
@@ -31,7 +31,7 @@
                 hashFunction = this.hasherProvider.NewHasher();
             }
 
-            if (ionValue.Type == IonType.Struct)
+            if (ionValue.CurrentType == IonType.Struct)
             {
                 this.currentHasher = new StructSerializer(hashFunction, this.Depth(), this.hasherProvider);
             }

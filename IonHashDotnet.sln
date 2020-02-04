@@ -1,7 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IonHashDotnet", "IonHashDotnet\IonHashDotnet.csproj", "{4B1639DE-7E43-4AF7-BFDF-3B2B7E75DB2C}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IonHashDotnet", "IonHashDotnet\IonHashDotnet.csproj", "{4B1639DE-7E43-4AF7-BFDF-3B2B7E75DB2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IonHashDotnet.Tests", "IonHashDotnet.Tests\IonHashDotnet.Tests.csproj", "{6A2E93C3-65A5-42B2-A121-29533EBB159D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +16,15 @@ Global
 		{4B1639DE-7E43-4AF7-BFDF-3B2B7E75DB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B1639DE-7E43-4AF7-BFDF-3B2B7E75DB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B1639DE-7E43-4AF7-BFDF-3B2B7E75DB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A2E93C3-65A5-42B2-A121-29533EBB159D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A2E93C3-65A5-42B2-A121-29533EBB159D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A2E93C3-65A5-42B2-A121-29533EBB159D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A2E93C3-65A5-42B2-A121-29533EBB159D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6791731-EA8B-422C-A816-145CF5601840}
 	EndGlobalSection
 EndGlobal
