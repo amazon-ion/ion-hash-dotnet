@@ -1,5 +1,5 @@
 language: csharp
-solution: IonHashDotnet.sln
+solution: Amazon.IonHashDotnet.sln
 dotnet: 2.1
 mono: none
 dist: xenial
@@ -15,7 +15,8 @@ before_install:
 script:
   - git submodule init
   - git submodule update
-  - cd IonHashDotnet.Tests
+  - cd Amazon.IonHashDotnet.Tests
   - dotnet test -c Release
   - dotnet test
   - cd ..
+
