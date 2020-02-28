@@ -238,5 +238,10 @@ namespace Amazon.IonHashDotnet
                 }
             }
         }
+
+        public void Dispose()
+        {
+            this.reader.Dispose();
+        }
     }
 }
