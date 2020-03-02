@@ -20,9 +20,9 @@ class HashDuringWriteAndRead
         IIonHasherProvider hasherProvider = new CryptoIonHasherProvider("SHA-256");
 
         // write a simple Ion struct and compute the hash
-        TextWriter tw = new StringWriter();
-        IIonWriter writer = IonTextWriterBuilder.Build(tw);
-        IIonHashWriter hashWriter = IonHashWriterBuilder.Standard()
+        using TextWriter tw = new StringWriter();
+        using IIonWriter writer = IonTextWriterBuilder.Build(tw);
+        using IIonHashWriter hashWriter = IonHashWriterBuilder.Standard()
             .WithHasherProvider(hasherProvider)
             .WithWriter(writer)
             .Build();
@@ -43,8 +43,8 @@ class HashDuringWriteAndRead
 
 
         // read the struct and compute the hash
-        IIonReader reader = IonReaderBuilder.Build(ionString);
-        IIonHashReader hashReader = IonHashReaderBuilder.Standard()
+        using IIonReader reader = IonReaderBuilder.Build(ionString);
+        using IIonHashReader hashReader = IonHashReaderBuilder.Standard()
             .WithReader(reader)
             .WithHasherProvider(hasherProvider)
             .Build();
