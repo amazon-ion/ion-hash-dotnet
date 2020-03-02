@@ -238,5 +238,13 @@ namespace Amazon.IonHashDotnet
                 }
             }
         }
+
+        /// <summary>
+        /// Dispose the IIonReader
+        /// </summary>
+        public void Dispose()
+        {
+            this.reader.Dispose();
+        }
     }
 }
