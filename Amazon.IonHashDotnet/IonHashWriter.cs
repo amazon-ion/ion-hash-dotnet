@@ -257,17 +257,9 @@ namespace Amazon.IonHashDotnet
                 return;
             }
 
-            if (depth > 0)
+            if (depth > 0 && IsInStruct)
             {
-                //string fieldName = reader.CurrentFieldName;
-                //if (fieldName != null)
-                //{
-                //    this.SetFieldName(fieldName);
-                //}
-                if (IsInStruct)
-                {
-                    this.SetFieldNameSymbol(reader.GetFieldNameSymbol());
-                }
+                this.SetFieldNameSymbol(reader.GetFieldNameSymbol());
             }
 
             foreach (var annotation in reader.GetTypeAnnotations())
