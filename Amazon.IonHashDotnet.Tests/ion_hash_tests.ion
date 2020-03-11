@@ -914,7 +914,7 @@ sexpCount128::{
 
 // structs
 { ion:{}, expect:{ identity:(update::(0x0b) update::(0xd0) update::(0x0e) digest::(0x0b 0xd0 0x0e)) } }
-/*
+
 {
   ion:{$0:1},              // SID0
   expect:{ identity:(
@@ -927,7 +927,7 @@ sexpCount128::{
     digest::(0x0b 0xd0 0x0c 0x0b 0x71 0x0c 0x0e 0x0c 0x0b 0x20 0x01 0x0c 0x0e 0x0e)
   ) }
 }
-*/
+
 {
   ion:{'':1},              // empty symbol
   expect:{ identity:(
