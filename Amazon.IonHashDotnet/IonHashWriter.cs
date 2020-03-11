@@ -259,10 +259,14 @@ namespace Amazon.IonHashDotnet
 
             if (depth > 0)
             {
-                string fieldName = reader.CurrentFieldName;
-                if (fieldName != null)
+                //string fieldName = reader.CurrentFieldName;
+                //if (fieldName != null)
+                //{
+                //    this.SetFieldName(fieldName);
+                //}
+                if (IsInStruct)
                 {
-                    this.SetFieldName(fieldName);
+                    this.SetFieldNameSymbol(reader.GetFieldNameSymbol());
                 }
             }
 
