@@ -57,6 +57,12 @@ namespace Amazon.IonHashDotnet
             private set;
         }
 
+        public SymbolToken CurrentFieldNameSymbol
+        {
+            get;
+            private set;
+        }
+
         public bool CurrentIsNull
         {
             get;
@@ -122,6 +128,7 @@ namespace Amazon.IonHashDotnet
         public void SetFieldNameSymbol(SymbolToken symbol)
         {
             this.CurrentFieldName = symbol.Text;
+            this.CurrentFieldNameSymbol = symbol;
             this.writer.SetFieldNameSymbol(symbol);
         }
 

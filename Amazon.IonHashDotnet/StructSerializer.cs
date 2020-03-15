@@ -32,7 +32,7 @@ namespace Amazon.IonHashDotnet
 
         internal override void Scalar(IIonHashValue value)
         {
-            this.scalarSerializer.HandleFieldName(value.CurrentFieldName);
+            this.scalarSerializer.HandleFieldName(value);
             this.scalarSerializer.Scalar(value);
             byte[] digest = this.scalarSerializer.Digest();
             this.AppendFieldHash(digest);

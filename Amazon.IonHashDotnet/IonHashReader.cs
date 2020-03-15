@@ -70,6 +70,14 @@ namespace Amazon.IonHashDotnet
             get { return this.reader.CurrentDepth; }
         }
 
+        public SymbolToken CurrentFieldNameSymbol
+        {
+            get
+            {
+                return this.GetFieldNameSymbol();
+            }
+        }
+
         // implements IIonHashReader
         public byte[] Digest()
         {
