@@ -183,6 +183,7 @@ namespace Amazon.IonHashDotnet.Tests
                         {
                             BigDecimal bigDec1 = it1.DecimalValue();
                             BigDecimal bigDec2 = it2.DecimalValue();
+                            AssertPreciselyEquals(bigDec1, bigDec2);
 
                             try
                             {
@@ -197,10 +198,6 @@ namespace Amazon.IonHashDotnet.Tests
                             catch (OverflowException)
                             {
                                 // Certain Ion Decimals in test file exceed C# decmial range. Just AssertPreciselyEquals.
-                            }
-                            finally
-                            {
-                                AssertPreciselyEquals(bigDec1, bigDec2);
                             }
                         }
 
@@ -304,8 +301,6 @@ namespace Amazon.IonHashDotnet.Tests
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(expected.IsNegativeZero, actual.IsNegativeZero, "isNegativeZero");
             Assert.IsTrue(expected.Equals(actual));
-
-            // TODO scaled and unscaled values, currently IonDotNet has internal access modifier for those fields.
         }
     }
 }
