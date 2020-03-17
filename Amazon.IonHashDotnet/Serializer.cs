@@ -76,7 +76,9 @@ namespace Amazon.IonHashDotnet
 
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
 
-            Boolean isZeroSymbol = (ionValue.CurrentFieldNameSymbol.Text == null &&
+
+            Boolean isZeroSymbol = (depth > 0 &&
+                ionValue.CurrentFieldNameSymbol.Text == null &&
                 ionValue.CurrentFieldNameSymbol.Sid == 0) ? true : false;
 
             byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
@@ -122,15 +124,18 @@ namespace Amazon.IonHashDotnet
 
         internal void HandleFieldName(IIonHashValue ionValue)
         {
-            // the "!= null" condition allows the empty symbol to be written
-            if (ionValue.CurrentFieldNameSymbol.Text != null && this.depth > 0)
+            if (depth > 0)
             {
-                this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
-            }
+                // the "!= null" condition allows the empty symbol to be written
+                if (ionValue.CurrentFieldNameSymbol.Text != null)
+                {
+                    this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
+                }
 
-            if (ionValue.CurrentFieldNameSymbol.Text == null && ionValue.CurrentFieldNameSymbol.Sid == 0)
-            {
-                this.WriteZeroSymbol();
+                if (ionValue.CurrentFieldNameSymbol.Text == null && ionValue.CurrentFieldNameSymbol.Sid == 0)
+                {
+                    this.WriteZeroSymbol();
+                }
             }
         }
 
