@@ -30,6 +30,11 @@ namespace Amazon.IonHashDotnet
             get;
         }
 
+        SymbolToken CurrentFieldNameSymbol
+        {
+            get;
+        }
+
         bool CurrentIsNull
         {
             get;
