@@ -23,17 +23,17 @@ namespace Amazon.IonHashDotnet
         private readonly Serializer scalarSerializer;
         private readonly List<byte[]> fieldHashes;
 
-        internal StructSerializer(IIonHasher hashFunction, int depth, IIonHasherProvider hashFunctionProvider)
-            : base(hashFunction, depth)
+        internal StructSerializer(IIonHasher hashFunction, IIonHasherProvider hashFunctionProvider)
+            : base(hashFunction)
         {
-            this.scalarSerializer = new Serializer(hashFunctionProvider.NewHasher(), depth + 1);
+            this.scalarSerializer = new Serializer(hashFunctionProvider.NewHasher());
             this.fieldHashes = new List<byte[]>();
         }
 
-        internal override void Scalar(IIonHashValue value)
+        internal override void Scalar(IIonHashValue value, bool isInStruct)
         {
-            this.scalarSerializer.HandleFieldName(value);
-            this.scalarSerializer.Scalar(value);
+            this.scalarSerializer.HandleFieldName(value, isInStruct);
+            this.scalarSerializer.Scalar(value, isInStruct);
             byte[] digest = this.scalarSerializer.Digest();
             this.AppendFieldHash(digest);
         }

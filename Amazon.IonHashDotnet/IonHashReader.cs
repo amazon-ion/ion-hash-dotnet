@@ -86,7 +86,7 @@ namespace Amazon.IonHashDotnet
 
         public void StepIn()
         {
-            this.hasher.StepIn(this);
+            this.hasher.StepIn(this, this.IsInStruct);
             this.reader.StepIn();
             this.ionType = IonType.None;
         }
@@ -104,7 +104,7 @@ namespace Amazon.IonHashDotnet
             {
                 if (this.CurrentIsNull)
                 {
-                    this.hasher.Scalar(this);
+                    this.hasher.Scalar(this, this.IsInStruct);
                 }
                 else
                 {
@@ -117,7 +117,7 @@ namespace Amazon.IonHashDotnet
 
             if (this.ionType != IonType.None && this.ionType.IsScalar())
             {
-                this.hasher.Scalar(this);
+                this.hasher.Scalar(this, this.IsInStruct);
             }
 
             this.ionType = this.reader.MoveNext();

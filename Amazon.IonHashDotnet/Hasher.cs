@@ -23,26 +23,23 @@ namespace Amazon.IonHashDotnet
     {
         private readonly IIonHasherProvider hasherProvider;
         private readonly Stack<Serializer> hasherStack;
-        private readonly Stack<Serializer> structStack;
         private Serializer currentHasher;
 
         internal Hasher(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
-            this.currentHasher = new Serializer(hasherProvider.NewHasher(), 0);
+            this.currentHasher = new Serializer(hasherProvider.NewHasher());
             this.hasherStack = new Stack<Serializer>();
-            this.structStack = new Stack<Serializer>();
 
             this.hasherStack.Push(this.currentHasher);
-            this.structStack.Push(this.currentHasher);
         }
 
-        internal void Scalar(IIonHashValue ionValue)
+        internal void Scalar(IIonHashValue ionValue, bool isInStruct)
         {
-            this.currentHasher.Scalar(ionValue);
+            this.currentHasher.Scalar(ionValue, isInStruct);
         }
 
-        internal void StepIn(IIonHashValue ionValue)
+        internal void StepIn(IIonHashValue ionValue, bool isInStruct)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
             if (this.currentHasher is StructSerializer)
@@ -52,16 +49,15 @@ namespace Amazon.IonHashDotnet
 
             if (ionValue.CurrentType == IonType.Struct)
             {
-                this.currentHasher = new StructSerializer(hashFunction, this.StructDepth(), this.hasherProvider);
-                this.structStack.Push(this.currentHasher);
+                this.currentHasher = new StructSerializer(hashFunction, this.hasherProvider);
             }
             else
             {
-                this.currentHasher = new Serializer(hashFunction, this.StructDepth());
+                this.currentHasher = new Serializer(hashFunction);
             }
 
             this.hasherStack.Push(this.currentHasher);
-            this.currentHasher.StepIn(ionValue);
+            this.currentHasher.StepIn(ionValue, isInStruct);
         }
 
         internal void StepOut()
@@ -79,7 +75,6 @@ namespace Amazon.IonHashDotnet
             {
                 byte[] digest = poppedHasher.Digest();
                 ((StructSerializer)this.currentHasher).AppendFieldHash(digest);
-                structStack.Pop();
             }
         }
 
@@ -96,11 +91,6 @@ namespace Amazon.IonHashDotnet
         private int Depth()
         {
             return this.hasherStack.Count - 1;
-        }
-
-        private int StructDepth()
-        {
-            return this.structStack.Count - 1;
         }
     }
 }

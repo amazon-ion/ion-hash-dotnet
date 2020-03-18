@@ -24,13 +24,11 @@ namespace Amazon.IonHashDotnet
 
     internal class Serializer
     {
-        private readonly int depth;
         private bool hasContainerAnnotation = false;
 
-        internal Serializer(IIonHasher hashFunction, int depth)
+        internal Serializer(IIonHasher hashFunction)
         {
             this.HashFunction = hashFunction;
-            this.depth = depth;
         }
 
         internal IIonHasher HashFunction { get; private set; }
@@ -69,7 +67,7 @@ namespace Amazon.IonHashDotnet
             return bytes;
         }
 
-        internal virtual void Scalar(IIonHashValue ionValue)
+        internal virtual void Scalar(IIonHashValue ionValue, bool isInstruct)
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
@@ -77,7 +75,7 @@ namespace Amazon.IonHashDotnet
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
 
 
-            Boolean isZeroSymbol = (depth > 0 &&
+            bool isZeroSymbol = (isInstruct &&
                 ionValue.CurrentFieldNameSymbol.Text == null &&
                 ionValue.CurrentFieldNameSymbol.Sid == 0) ? true : false;
 
@@ -97,9 +95,9 @@ namespace Amazon.IonHashDotnet
             this.HandleAnnotationsEnd(ionValue);
         }
 
-        internal void StepIn(IIonHashValue ionValue)
+        internal void StepIn(IIonHashValue ionValue, bool isInStruct)
         {
-            this.HandleFieldName(ionValue);
+            this.HandleFieldName(ionValue, isInStruct);
             this.HandleAnnotationsBegin(ionValue, true);
             this.BeginMarker();
             byte tq = TQ(ionValue);
@@ -122,9 +120,9 @@ namespace Amazon.IonHashDotnet
             return this.HashFunction.Digest();
         }
 
-        internal void HandleFieldName(IIonHashValue ionValue)
+        internal void HandleFieldName(IIonHashValue ionValue, bool isInStruct)
         {
-            if (depth > 0)
+            if (isInStruct)
             {
                 // the "!= null" condition allows the empty symbol to be written
                 if (ionValue.CurrentFieldNameSymbol.Text != null)
@@ -316,7 +314,7 @@ namespace Amazon.IonHashDotnet
             return 0;
         }
 
-        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, Boolean isZeroSymbol, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, bool isZeroSymbol, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
