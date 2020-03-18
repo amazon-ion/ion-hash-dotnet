@@ -73,9 +73,10 @@ namespace Amazon.IonHashDotnet
             this.BeginMarker();
 
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
+            IonType ionType = ionValue.CurrentIsNull ? IonType.None : ionValue.CurrentType;
             byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
             (byte tq, byte[] representation) = ((byte, byte[])) this.ScalarOrNullSplitParts(
-                ionValue.CurrentType,
+                ionType,
                 ionValueValue,
                 scalarBytes);
 
@@ -250,8 +251,9 @@ namespace Amazon.IonHashDotnet
         private void WriteZeroSymbol()
         {
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, new SymbolToken(null, 0), false);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, true, scalarBytes);
+            SymbolToken symbolToken = new SymbolToken(null, 0);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, scalarBytes);
 
             this.Update(new byte[] { tq });
             if (representation.Length > 0)
