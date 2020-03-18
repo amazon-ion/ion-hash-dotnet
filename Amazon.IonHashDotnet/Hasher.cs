@@ -23,6 +23,7 @@ namespace Amazon.IonHashDotnet
     {
         private readonly IIonHasherProvider hasherProvider;
         private readonly Stack<Serializer> hasherStack;
+        private readonly Stack<Serializer> structStack;
         private Serializer currentHasher;
 
         internal Hasher(IIonHasherProvider hasherProvider)
@@ -30,7 +31,10 @@ namespace Amazon.IonHashDotnet
             this.hasherProvider = hasherProvider;
             this.currentHasher = new Serializer(hasherProvider.NewHasher(), 0);
             this.hasherStack = new Stack<Serializer>();
+            this.structStack = new Stack<Serializer>();
+
             this.hasherStack.Push(this.currentHasher);
+            this.structStack.Push(this.currentHasher);
         }
 
         internal void Scalar(IIonHashValue ionValue)
@@ -48,11 +52,12 @@ namespace Amazon.IonHashDotnet
 
             if (ionValue.CurrentType == IonType.Struct)
             {
-                this.currentHasher = new StructSerializer(hashFunction, this.Depth(), this.hasherProvider);
+                this.currentHasher = new StructSerializer(hashFunction, this.StructDepth(), this.hasherProvider);
+                this.structStack.Push(this.currentHasher);
             }
             else
             {
-                this.currentHasher = new Serializer(hashFunction, this.Depth());
+                this.currentHasher = new Serializer(hashFunction, this.StructDepth());
             }
 
             this.hasherStack.Push(this.currentHasher);
@@ -74,6 +79,7 @@ namespace Amazon.IonHashDotnet
             {
                 byte[] digest = poppedHasher.Digest();
                 ((StructSerializer)this.currentHasher).AppendFieldHash(digest);
+                structStack.Pop();
             }
         }
 
@@ -90,6 +96,11 @@ namespace Amazon.IonHashDotnet
         private int Depth()
         {
             return this.hasherStack.Count - 1;
+        }
+
+        private int StructDepth()
+        {
+            return this.structStack.Count - 1;
         }
     }
 }

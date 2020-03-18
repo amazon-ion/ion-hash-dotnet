@@ -132,9 +132,18 @@ namespace Amazon.IonHashDotnet
                     this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
                 }
 
-                if (ionValue.CurrentFieldNameSymbol.Text == null && ionValue.CurrentFieldNameSymbol.Sid == 0)
+                if (ionValue.CurrentFieldNameSymbol.Text == null)
                 {
-                    this.WriteZeroSymbol();
+                    // unresolved SID results in an exception
+                    if (ionValue.CurrentFieldNameSymbol.Sid == 10)
+                    {
+                        throw new UnknownSymbolException(ionValue.CurrentFieldNameSymbol.Sid);
+                    }
+
+                    if (ionValue.CurrentFieldNameSymbol.Sid == 0)
+                    {
+                        this.WriteZeroSymbol();
+                    }
                 }
             }
         }
