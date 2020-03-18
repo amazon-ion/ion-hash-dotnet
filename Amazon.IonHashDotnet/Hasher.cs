@@ -30,7 +30,6 @@ namespace Amazon.IonHashDotnet
             this.hasherProvider = hasherProvider;
             this.currentHasher = new Serializer(hasherProvider.NewHasher());
             this.hasherStack = new Stack<Serializer>();
-
             this.hasherStack.Push(this.currentHasher);
         }
 
