@@ -151,6 +151,7 @@ namespace Amazon.IonHashDotnet
             this.hasher.StepIn(this, IsInStruct);
             this.writer.StepIn(type);
             this.CurrentFieldName = default;
+            this.CurrentFieldNameSymbol = default;
             this.Annotations.Clear();
         }
 
