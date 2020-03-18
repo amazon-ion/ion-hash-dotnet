@@ -122,6 +122,7 @@ namespace Amazon.IonHashDotnet
         public void SetFieldName(string name)
         {
             this.CurrentFieldName = name;
+            this.CurrentFieldNameSymbol = new SymbolToken(name, SymbolToken.UnknownSid);
             this.writer.SetFieldName(name);
         }
 
