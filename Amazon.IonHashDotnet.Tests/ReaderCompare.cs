@@ -45,6 +45,8 @@ namespace Amazon.IonHashDotnet.Tests
                 }
 
                 CompareAnnotations(it1, it2);
+                CompareAnnotationSymbols(it1, it2);
+                CompareHasAnnotations(it1, it2);
 
                 bool isNull = it1.CurrentIsNull;
                 Assert.AreEqual(isNull, it2.CurrentIsNull);
@@ -123,10 +125,32 @@ namespace Amazon.IonHashDotnet.Tests
 
         private static void CompareAnnotations(IIonReader it1, IIonReader it2)
         {
-            SymbolToken[] syms1 = it1.GetTypeAnnotations().ToArray();
-            SymbolToken[] syms2 = it2.GetTypeAnnotations().ToArray();
+            string[] syms_text1 = it1.GetTypeAnnotations();
+            string[] syms_text2 = it2.GetTypeAnnotations();
+
+            Assert.IsTrue(syms_text1.SequenceEqual(syms_text2));
+        }
+
+        private static void CompareAnnotationSymbols(IIonReader it1, IIonReader it2)
+        {
+            SymbolToken[] syms1 = it1.GetTypeAnnotationSymbols().ToArray();
+            SymbolToken[] syms2 = it2.GetTypeAnnotationSymbols().ToArray();
 
             AssertSymbolEquals("annotation", syms1, syms2);
+        }
+
+        private static void CompareHasAnnotations(IIonReader it1, IIonReader it2)
+        {
+            string[] syms_text1 = it1.GetTypeAnnotations();
+            string[] syms_text2 = it2.GetTypeAnnotations();
+
+            Assert.IsTrue(syms_text1.Count() == syms_text2.Count());
+
+            for (int index = 0; index < syms_text1.Count(); index++)
+            {
+                Assert.IsTrue(it1.HasAnnotation(syms_text2[index]));
+                Assert.IsTrue(it2.HasAnnotation(syms_text1[index]));
+            }
         }
 
         private static void CompareScalars(IonType t, bool isNull, IIonReader it1, IIonReader it2)

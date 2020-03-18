@@ -45,7 +45,7 @@ namespace Amazon.IonHashDotnet.Tests
                     testName = testCase.GetField("ion").ToPrettyString();
                 }
 
-                IReadOnlyCollection<SymbolToken> annotations = testCase.GetTypeAnnotations();
+                IReadOnlyCollection<SymbolToken> annotations = testCase.GetTypeAnnotationSymbols();
                 if (annotations.Count > 0)
                 {
                     testName = annotations.ElementAt(0).Text;
