@@ -67,22 +67,17 @@ namespace Amazon.IonHashDotnet
             return bytes;
         }
 
-        internal virtual void Scalar(IIonHashValue ionValue, bool isInstruct)
+        internal virtual void Scalar(IIonHashValue ionValue, bool isInStruct)
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
 
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
 
-
-            bool isZeroSymbol = (isInstruct &&
-                ionValue.CurrentFieldNameSymbol.Text == null &&
-                ionValue.CurrentFieldNameSymbol.Sid == 0) ? true : false;
-
             byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
+            (byte tq, byte[] representation) = ((byte, byte[])) this.ScalarOrNullSplitParts(
                 ionValue.CurrentType,
-                isZeroSymbol,
+                ionValueValue,
                 scalarBytes);
 
             this.Update(new byte[] { tq });
@@ -240,8 +235,9 @@ namespace Amazon.IonHashDotnet
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, new SymbolToken(token, SymbolToken.UnknownSid), false);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
+            SymbolToken symbolToken = new SymbolToken(token, SymbolToken.UnknownSid);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, scalarBytes);
 
             this.Update(new byte[] { tq });
             if (representation.Length > 0)
@@ -314,7 +310,7 @@ namespace Amazon.IonHashDotnet
             return 0;
         }
 
-        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, bool isZeroSymbol, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, dynamic ionValue, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
@@ -336,7 +332,8 @@ namespace Amazon.IonHashDotnet
             {
                 // symbols are serialized as strings; use the correct TQ:
                 tq = 0x70;
-                if (isZeroSymbol)
+
+                if (ionValue.Text == null && ionValue.Sid == 0)
                 {
                     tq = 0x71;
                 }
