@@ -354,6 +354,7 @@ namespace Amazon.IonHashDotnet
             this.CurrentIsNull = value == null;
             this.hasher.Scalar(this, IsInStruct);
             this.CurrentFieldName = default;
+            this.CurrentFieldNameSymbol = default;
             this.Annotations.Clear();
         }
     }
