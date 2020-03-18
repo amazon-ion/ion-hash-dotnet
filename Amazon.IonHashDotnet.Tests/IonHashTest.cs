@@ -24,7 +24,6 @@ namespace Amazon.IonHashDotnet.Tests
     using Amazon.IonDotnet.Builders;
     using Amazon.IonDotnet.Tree;
     using Amazon.IonDotnet.Tree.Impl;
-    using Amazon.IonHashDotnet;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -141,7 +140,7 @@ namespace Amazon.IonHashDotnet.Tests
             while (enumerator.MoveNext())
             {
                 IIonValue v = enumerator.Current;
-                foreach (SymbolToken annotation in v.GetTypeAnnotations())
+                foreach (SymbolToken annotation in v.GetTypeAnnotationSymbols())
                 {
                     methodCalls.Add(annotation.Text);
                 }
@@ -162,7 +161,7 @@ namespace Amazon.IonHashDotnet.Tests
                 while (enumerator.MoveNext())
                 {
                     IIonValue v = enumerator.Current;
-                    String methodCall = v.GetTypeAnnotations().ElementAt(0).Text;
+                    String methodCall = v.GetTypeAnnotationSymbols().ElementAt(0).Text;
                     if (methodCalls.Contains(methodCall))
                     {
                         result.Add(v);
@@ -187,7 +186,7 @@ namespace Amazon.IonHashDotnet.Tests
                     sb.Append("\n  ");
                 }
 
-                foreach (SymbolToken annotation in hashCall.GetTypeAnnotations())
+                foreach (SymbolToken annotation in hashCall.GetTypeAnnotationSymbols())
                 {
                     sb.Append(annotation.Text).Append("::");
                 }

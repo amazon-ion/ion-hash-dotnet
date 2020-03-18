@@ -36,7 +36,7 @@ namespace Amazon.IonHashDotnet
         // implements IIonHashValue
         public IList<SymbolToken> Annotations
         {
-            get { return this.GetTypeAnnotations().ToList(); }
+            get { return this.GetTypeAnnotationSymbols().ToList(); }
         }
 
         public dynamic CurrentValue
@@ -74,6 +74,14 @@ namespace Amazon.IonHashDotnet
         public byte[] Digest()
         {
             return this.hasher.Digest();
+        }
+
+        /// <summary>
+        /// Dispose the IIonReader
+        /// </summary>
+        public void Dispose()
+        {
+            this.reader.Dispose();
         }
 
         public void StepIn()
@@ -182,9 +190,19 @@ namespace Amazon.IonHashDotnet
             return this.reader.GetBytes(buffer);
         }
 
-        public IEnumerable<SymbolToken> GetTypeAnnotations()
+        public string[] GetTypeAnnotations()
         {
             return this.reader.GetTypeAnnotations();
+        }
+
+        public IEnumerable<SymbolToken> GetTypeAnnotationSymbols()
+        {
+            return this.reader.GetTypeAnnotationSymbols();
+        }
+
+        public bool HasAnnotation(string annotation)
+        {
+            return this.reader.HasAnnotation(annotation);
         }
 
         public byte[] NewByteArray()
@@ -237,14 +255,6 @@ namespace Amazon.IonHashDotnet
                     this.StepOut();
                 }
             }
-        }
-
-        /// <summary>
-        /// Dispose the IIonReader
-        /// </summary>
-        public void Dispose()
-        {
-            this.reader.Dispose();
         }
     }
 }

@@ -266,7 +266,7 @@ namespace Amazon.IonHashDotnet
                 }
             }
 
-            foreach (var annotation in reader.GetTypeAnnotations())
+            foreach (var annotation in reader.GetTypeAnnotationSymbols())
             {
                 this.AddTypeAnnotationSymbol(annotation);
             }
