@@ -124,7 +124,7 @@ namespace Amazon.IonHashDotnet
             if (this.depth > 0 && ionValue.IsInStruct)
             {
                 if (ionValue.CurrentFieldNameSymbol.Text == null &&
-                    ionValue.CurrentFieldNameSymbol.Sid == 10)
+                    ionValue.CurrentFieldNameSymbol.Sid != 0)
                 {
                     throw new UnknownSymbolException(ionValue.CurrentFieldNameSymbol.Sid);
                 }
@@ -313,7 +313,7 @@ namespace Amazon.IonHashDotnet
                 {
                     tq |= 0x0F;
                 }
-                else if (!isNull && symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
+                else if (symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
                 {
                     tq = 0x71;
                 }
