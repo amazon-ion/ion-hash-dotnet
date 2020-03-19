@@ -24,11 +24,13 @@ namespace Amazon.IonHashDotnet
 
     internal class Serializer
     {
+        private readonly int depth;
         private bool hasContainerAnnotation = false;
 
-        internal Serializer(IIonHasher hashFunction)
+        internal Serializer(IIonHasher hashFunction, int depth)
         {
             this.HashFunction = hashFunction;
+            this.depth = depth;
         }
 
         internal IIonHasher HashFunction { get; private set; }
@@ -117,7 +119,7 @@ namespace Amazon.IonHashDotnet
 
         internal void HandleFieldName(IIonHashValue ionValue, bool isInStruct)
         {
-            if (isInStruct)
+            if (this.depth > 0 && isInStruct)
             {
                 // the "!= null" condition allows the empty symbol to be written
                 if (ionValue.CurrentFieldNameSymbol.Text != null)

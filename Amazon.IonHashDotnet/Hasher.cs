@@ -28,7 +28,7 @@ namespace Amazon.IonHashDotnet
         internal Hasher(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
-            this.currentHasher = new Serializer(hasherProvider.NewHasher());
+            this.currentHasher = new Serializer(hasherProvider.NewHasher(), 0);
             this.hasherStack = new Stack<Serializer>();
             this.hasherStack.Push(this.currentHasher);
         }
@@ -48,11 +48,11 @@ namespace Amazon.IonHashDotnet
 
             if (ionValue.CurrentType == IonType.Struct)
             {
-                this.currentHasher = new StructSerializer(hashFunction, this.hasherProvider);
+                this.currentHasher = new StructSerializer(hashFunction, this.Depth(), this.hasherProvider);
             }
             else
             {
-                this.currentHasher = new Serializer(hashFunction);
+                this.currentHasher = new Serializer(hashFunction, this.Depth());
             }
 
             this.hasherStack.Push(this.currentHasher);
