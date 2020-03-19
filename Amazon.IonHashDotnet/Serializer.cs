@@ -309,7 +309,11 @@ namespace Amazon.IonHashDotnet
             {
                 // symbols are serialized as strings; use the correct TQ:
                 tq = 0x70;
-                if (!isNull && symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
+                if (isNull)
+                {
+                    tq |= 0x0F;
+                }
+                else if (!isNull && symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
                 {
                     tq = 0x71;
                 }
