@@ -80,6 +80,7 @@ namespace Amazon.IonHashDotnet
             (byte tq, byte[] representation) = ((byte, byte[])) this.ScalarOrNullSplitParts(
                 ionType,
                 ionValueValue,
+                ionValue.CurrentIsNull,
                 scalarBytes);
 
             this.Update(new byte[] { tq });
@@ -225,10 +226,10 @@ namespace Amazon.IonHashDotnet
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            int sid = (token == null ? 0 : SymbolToken.UnknownSid);
+            int sid = token == null ? 0 : SymbolToken.UnknownSid;
             SymbolToken symbolToken = new SymbolToken(token, sid);
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, scalarBytes);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, false, scalarBytes);
 
             this.Update(new byte[] { tq });
             if (representation.Length > 0)
@@ -285,7 +286,7 @@ namespace Amazon.IonHashDotnet
             return 0;
         }
 
-        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, dynamic ionValue, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, dynamic ionValue, bool isNull, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
