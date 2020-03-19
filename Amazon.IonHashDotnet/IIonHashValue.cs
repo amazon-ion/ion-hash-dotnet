@@ -49,5 +49,10 @@ namespace Amazon.IonHashDotnet
         {
             get;
         }
+
+        bool IsInStruct
+        {
+            get;
+        }
     }
 }

@@ -33,12 +33,12 @@ namespace Amazon.IonHashDotnet
             this.hasherStack.Push(this.currentHasher);
         }
 
-        internal void Scalar(IIonHashValue ionValue, bool isInStruct)
+        internal void Scalar(IIonHashValue ionValue)
         {
-            this.currentHasher.Scalar(ionValue, isInStruct);
+            this.currentHasher.Scalar(ionValue);
         }
 
-        internal void StepIn(IIonHashValue ionValue, bool isInStruct)
+        internal void StepIn(IIonHashValue ionValue)
         {
             IIonHasher hashFunction = this.currentHasher.HashFunction;
             if (this.currentHasher is StructSerializer)
@@ -56,7 +56,7 @@ namespace Amazon.IonHashDotnet
             }
 
             this.hasherStack.Push(this.currentHasher);
-            this.currentHasher.StepIn(ionValue, isInStruct);
+            this.currentHasher.StepIn(ionValue);
         }
 
         internal void StepOut()

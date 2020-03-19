@@ -30,10 +30,10 @@ namespace Amazon.IonHashDotnet
             this.fieldHashes = new List<byte[]>();
         }
 
-        internal override void Scalar(IIonHashValue value, bool isInStruct)
+        internal override void Scalar(IIonHashValue value)
         {
-            this.scalarSerializer.HandleFieldName(value, isInStruct);
-            this.scalarSerializer.Scalar(value, isInStruct);
+            this.scalarSerializer.HandleFieldName(value);
+            this.scalarSerializer.Scalar(value);
             byte[] digest = this.scalarSerializer.Digest();
             this.AppendFieldHash(digest);
         }

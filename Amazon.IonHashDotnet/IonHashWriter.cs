@@ -149,7 +149,7 @@ namespace Amazon.IonHashDotnet
             this.CurrentType = type;
             this.CurrentValue = null;
             this.CurrentIsNull = false;
-            this.hasher.StepIn(this, IsInStruct);
+            this.hasher.StepIn(this);
             this.writer.StepIn(type);
             this.CurrentFieldName = default;
             this.CurrentFieldNameSymbol = default;
@@ -354,7 +354,7 @@ namespace Amazon.IonHashDotnet
             this.CurrentType = type;
             this.CurrentValue = value;
             this.CurrentIsNull = value == null;
-            this.hasher.Scalar(this, IsInStruct);
+            this.hasher.Scalar(this);
             this.CurrentFieldName = default;
             this.CurrentFieldNameSymbol = default;
             this.Annotations.Clear();

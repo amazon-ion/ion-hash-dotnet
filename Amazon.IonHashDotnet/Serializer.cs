@@ -69,7 +69,7 @@ namespace Amazon.IonHashDotnet
             return bytes;
         }
 
-        internal virtual void Scalar(IIonHashValue ionValue, bool isInStruct)
+        internal virtual void Scalar(IIonHashValue ionValue)
         {
             this.HandleAnnotationsBegin(ionValue);
             this.BeginMarker();
@@ -93,9 +93,9 @@ namespace Amazon.IonHashDotnet
             this.HandleAnnotationsEnd(ionValue);
         }
 
-        internal void StepIn(IIonHashValue ionValue, bool isInStruct)
+        internal void StepIn(IIonHashValue ionValue)
         {
-            this.HandleFieldName(ionValue, isInStruct);
+            this.HandleFieldName(ionValue);
             this.HandleAnnotationsBegin(ionValue, true);
             this.BeginMarker();
             byte tq = TQ(ionValue);
@@ -118,9 +118,9 @@ namespace Amazon.IonHashDotnet
             return this.HashFunction.Digest();
         }
 
-        internal void HandleFieldName(IIonHashValue ionValue, bool isInStruct)
+        internal void HandleFieldName(IIonHashValue ionValue)
         {
-            if (this.depth > 0 && isInStruct)
+            if (this.depth > 0 && ionValue.IsInStruct)
             {
                 if (ionValue.CurrentFieldNameSymbol.Text == null &&
                     ionValue.CurrentFieldNameSymbol.Sid == 10)
