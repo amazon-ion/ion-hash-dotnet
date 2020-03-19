@@ -121,25 +121,13 @@ namespace Amazon.IonHashDotnet
         {
             if (this.depth > 0 && isInStruct)
             {
-                // the "!= null" condition allows the empty symbol to be written
-                if (ionValue.CurrentFieldNameSymbol.Text != null)
+                if (ionValue.CurrentFieldNameSymbol.Text == null &&
+                    ionValue.CurrentFieldNameSymbol.Sid == 10)
                 {
-                    this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
+                    throw new UnknownSymbolException(ionValue.CurrentFieldNameSymbol.Sid);
                 }
 
-                if (ionValue.CurrentFieldNameSymbol.Text == null)
-                {
-                    // unresolved SID results in an exception
-                    if (ionValue.CurrentFieldNameSymbol.Sid == 10)
-                    {
-                        throw new UnknownSymbolException(ionValue.CurrentFieldNameSymbol.Sid);
-                    }
-
-                    if (ionValue.CurrentFieldNameSymbol.Sid == 0)
-                    {
-                        this.WriteZeroSymbol();
-                    }
-                }
+                this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
             }
         }
 
@@ -237,23 +225,8 @@ namespace Amazon.IonHashDotnet
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            SymbolToken symbolToken = new SymbolToken(token, SymbolToken.UnknownSid);
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, scalarBytes);
-
-            this.Update(new byte[] { tq });
-            if (representation.Length > 0)
-            {
-                this.Update(Escape(representation));
-            }
-
-            this.EndMarker();
-        }
-
-        private void WriteZeroSymbol()
-        {
-            this.BeginMarker();
-            SymbolToken symbolToken = new SymbolToken(null, 0);
+            int sid = (token == null ? 0 : SymbolToken.UnknownSid);
+            SymbolToken symbolToken = new SymbolToken(token, sid);
             byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
             (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, scalarBytes);
 
