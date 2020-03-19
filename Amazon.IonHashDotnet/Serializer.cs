@@ -77,7 +77,8 @@ namespace Amazon.IonHashDotnet
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
             IonType ionType = ionValue.CurrentIsNull ? IonType.None : ionValue.CurrentType;
             byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
-            (byte tq, byte[] representation) = ((byte, byte[])) this.ScalarOrNullSplitParts(
+            ionValueValue = ionValue.CurrentType == IonType.Symbol ? ionValueValue : null;
+            (byte tq, byte[] representation) = ((byte, byte[]))this.ScalarOrNullSplitParts(
                 ionType,
                 ionValueValue,
                 ionValue.CurrentIsNull,
@@ -286,7 +287,7 @@ namespace Amazon.IonHashDotnet
             return 0;
         }
 
-        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, dynamic ionValue, bool isNull, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, SymbolToken? symbolToken, bool isNull, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
@@ -308,7 +309,7 @@ namespace Amazon.IonHashDotnet
             {
                 // symbols are serialized as strings; use the correct TQ:
                 tq = 0x70;
-                if (ionValue.Text == null && ionValue.Sid == 0)
+                if (!isNull && symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
                 {
                     tq = 0x71;
                 }

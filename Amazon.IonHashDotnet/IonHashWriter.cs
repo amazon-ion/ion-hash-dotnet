@@ -266,7 +266,7 @@ namespace Amazon.IonHashDotnet
                 return;
             }
 
-            if (depth > 0 && IsInStruct)
+            if (depth > 0 && this.IsInStruct)
             {
                 this.SetFieldNameSymbol(reader.GetFieldNameSymbol());
             }
