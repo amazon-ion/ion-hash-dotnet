@@ -70,6 +70,14 @@ namespace Amazon.IonHashDotnet
             get { return this.reader.CurrentDepth; }
         }
 
+        public SymbolToken CurrentFieldNameSymbol
+        {
+            get
+            {
+                return this.GetFieldNameSymbol();
+            }
+        }
+
         // implements IIonHashReader
         public byte[] Digest()
         {
@@ -213,6 +221,14 @@ namespace Amazon.IonHashDotnet
         public int GetLobByteSize()
         {
             return this.reader.GetLobByteSize();
+        }
+
+        /// <summary>
+        /// Dispose the IIonReader
+        /// </summary>
+        public void Dispose()
+        {
+            this.reader.Dispose();
         }
 
         private dynamic GetIonValue()

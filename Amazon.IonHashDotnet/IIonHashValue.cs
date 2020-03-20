@@ -30,6 +30,11 @@ namespace Amazon.IonHashDotnet
             get;
         }
 
+        SymbolToken CurrentFieldNameSymbol
+        {
+            get;
+        }
+
         bool CurrentIsNull
         {
             get;
@@ -41,6 +46,11 @@ namespace Amazon.IonHashDotnet
         }
 
         dynamic CurrentValue
+        {
+            get;
+        }
+
+        bool IsInStruct
         {
             get;
         }

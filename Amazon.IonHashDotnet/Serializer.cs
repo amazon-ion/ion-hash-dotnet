@@ -75,9 +75,12 @@ namespace Amazon.IonHashDotnet
             this.BeginMarker();
 
             dynamic ionValueValue = ionValue.CurrentIsNull ? null : ionValue.CurrentValue;
+            IonType ionType = ionValue.CurrentIsNull ? IonType.None : ionValue.CurrentType;
             byte[] scalarBytes = this.GetBytes(ionValue.CurrentType, ionValueValue, ionValue.CurrentIsNull);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(
-                ionValue.CurrentType,
+            ionValueValue = ionValue.CurrentType == IonType.Symbol ? ionValueValue : null;
+            (byte tq, byte[] representation) = ((byte, byte[]))this.ScalarOrNullSplitParts(
+                ionType,
+                ionValueValue,
                 ionValue.CurrentIsNull,
                 scalarBytes);
 
@@ -93,7 +96,7 @@ namespace Amazon.IonHashDotnet
 
         internal void StepIn(IIonHashValue ionValue)
         {
-            this.HandleFieldName(ionValue.CurrentFieldName);
+            this.HandleFieldName(ionValue);
             this.HandleAnnotationsBegin(ionValue, true);
             this.BeginMarker();
             byte tq = TQ(ionValue);
@@ -116,12 +119,17 @@ namespace Amazon.IonHashDotnet
             return this.HashFunction.Digest();
         }
 
-        internal void HandleFieldName(string fieldName)
+        internal void HandleFieldName(IIonHashValue ionValue)
         {
-            // the "!= null" condition allows the empty symbol to be written
-            if (fieldName != null && this.depth > 0)
+            if (this.depth > 0 && ionValue.IsInStruct)
             {
-                this.WriteSymbol(fieldName);
+                if (ionValue.CurrentFieldNameSymbol.Text == null &&
+                    ionValue.CurrentFieldNameSymbol.Sid != 0)
+                {
+                    throw new UnknownSymbolException(ionValue.CurrentFieldNameSymbol.Sid);
+                }
+
+                this.WriteSymbol(ionValue.CurrentFieldNameSymbol.Text);
             }
         }
 
@@ -219,8 +227,10 @@ namespace Amazon.IonHashDotnet
         private void WriteSymbol(string token)
         {
             this.BeginMarker();
-            byte[] scalarBytes = this.GetBytes(IonType.Symbol, new SymbolToken(token, SymbolToken.UnknownSid), false);
-            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, false, scalarBytes);
+            int sid = token == null ? 0 : SymbolToken.UnknownSid;
+            SymbolToken symbolToken = new SymbolToken(token, sid);
+            byte[] scalarBytes = this.GetBytes(IonType.Symbol, symbolToken, false);
+            (byte tq, byte[] representation) = this.ScalarOrNullSplitParts(IonType.Symbol, symbolToken, false, scalarBytes);
 
             this.Update(new byte[] { tq });
             if (representation.Length > 0)
@@ -277,7 +287,7 @@ namespace Amazon.IonHashDotnet
             return 0;
         }
 
-        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, bool isNull, byte[] bytes)
+        private (byte, byte[]) ScalarOrNullSplitParts(IonType type, SymbolToken? symbolToken, bool isNull, byte[] bytes)
         {
             int offset = this.GetLengthLength(bytes) + 1;
 
@@ -302,6 +312,10 @@ namespace Amazon.IonHashDotnet
                 if (isNull)
                 {
                     tq |= 0x0F;
+                }
+                else if (symbolToken != null && symbolToken.Value.Text == null && symbolToken.Value.Sid == 0)
+                {
+                    tq = 0x71;
                 }
             }
 

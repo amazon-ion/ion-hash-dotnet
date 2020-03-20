@@ -333,10 +333,8 @@ timestampDistinct03::{
 // /timestamps
 
 // symbols
-/*
 { ion:$0,            expect:{ identity:(update::(0x0b) update::(0x71) update::(0x0e)
                                         digest::(0x0b 0x71 0x0e)) } }
-*/
 { ion:$1,            expect:{ identity:(update::(0x0b) update::(0x70) update::(0x24 0x69 0x6f 0x6e) update::(0x0e)
                                         digest::(0x0b 0x70 0x24 0x69 0x6f 0x6e 0x0e)) } }
 // skipping $2, as it can't be processed in this manner
@@ -910,7 +908,6 @@ sexpCount128::{
 
 // structs
 { ion:{}, expect:{ identity:(update::(0x0b) update::(0xd0) update::(0x0e) digest::(0x0b 0xd0 0x0e)) } }
-/*
 {
   ion:{$0:1},              // SID0
   expect:{ identity:(
@@ -923,7 +920,6 @@ sexpCount128::{
     digest::(0x0b 0xd0 0x0c 0x0b 0x71 0x0c 0x0e 0x0c 0x0b 0x20 0x01 0x0c 0x0e 0x0e)
   ) }
 }
-*/
 {
   ion:{'':1},              // empty symbol
   expect:{ identity:(

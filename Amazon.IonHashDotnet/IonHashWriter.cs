@@ -57,6 +57,12 @@ namespace Amazon.IonHashDotnet
             private set;
         }
 
+        public SymbolToken CurrentFieldNameSymbol
+        {
+            get;
+            private set;
+        }
+
         public bool CurrentIsNull
         {
             get;
@@ -116,12 +122,14 @@ namespace Amazon.IonHashDotnet
         public void SetFieldName(string name)
         {
             this.CurrentFieldName = name;
+            this.CurrentFieldNameSymbol = new SymbolToken(name, SymbolToken.UnknownSid);
             this.writer.SetFieldName(name);
         }
 
         public void SetFieldNameSymbol(SymbolToken symbol)
         {
             this.CurrentFieldName = symbol.Text;
+            this.CurrentFieldNameSymbol = symbol;
             this.writer.SetFieldNameSymbol(symbol);
         }
 
@@ -144,6 +152,7 @@ namespace Amazon.IonHashDotnet
             this.hasher.StepIn(this);
             this.writer.StepIn(type);
             this.CurrentFieldName = default;
+            this.CurrentFieldNameSymbol = default;
             this.Annotations.Clear();
         }
 
@@ -257,13 +266,9 @@ namespace Amazon.IonHashDotnet
                 return;
             }
 
-            if (depth > 0)
+            if (depth > 0 && this.IsInStruct)
             {
-                string fieldName = reader.CurrentFieldName;
-                if (fieldName != null)
-                {
-                    this.SetFieldName(fieldName);
-                }
+                this.SetFieldNameSymbol(reader.GetFieldNameSymbol());
             }
 
             foreach (var annotation in reader.GetTypeAnnotationSymbols())
@@ -351,6 +356,7 @@ namespace Amazon.IonHashDotnet
             this.CurrentIsNull = value == null;
             this.hasher.Scalar(this);
             this.CurrentFieldName = default;
+            this.CurrentFieldNameSymbol = default;
             this.Annotations.Clear();
         }
     }
