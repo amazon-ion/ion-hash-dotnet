@@ -83,7 +83,7 @@ namespace Amazon.IonHashDotnet.Tests
 
             //Commented out following assertion because it is failing
             //https://github.com/amzn/ion-hash-dotnet/issues/5
-            //Assert.AreEqual("null [5] null {hello:ion::hash::world}", stringWriter);
+            Assert.AreEqual("null [5] null {hello:ion::hash::'world'}", stringWriter.ToString());
         }
 
         [TestMethod]
