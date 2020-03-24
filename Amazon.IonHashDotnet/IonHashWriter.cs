@@ -89,7 +89,6 @@ namespace Amazon.IonHashDotnet
         public void AddTypeAnnotation(string annotation)
         {
             this.AddTypeAnnotationSymbol(new SymbolToken(annotation, SymbolToken.UnknownSid));
-            this.writer.AddTypeAnnotation(annotation);
         }
 
         public void AddTypeAnnotationSymbol(SymbolToken annotation)
