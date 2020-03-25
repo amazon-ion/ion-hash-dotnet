@@ -150,7 +150,6 @@ namespace Amazon.IonHashDotnet.Tests
             {
                 return;
             }
-
             string[] syms_text1 = it1.GetTypeAnnotations();
             string[] syms_text2 = it2.GetTypeAnnotations();
 
