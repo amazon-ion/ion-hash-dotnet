@@ -125,6 +125,10 @@ namespace Amazon.IonHashDotnet.Tests
 
         private static void CompareAnnotations(IIonReader it1, IIonReader it2)
         {
+            //Skip assertion if annotation is zero symbol
+            if (it1.GetTypeAnnotationSymbols().Any(a => a.Text == null && a.Sid == 0)) {
+                return;
+            }
             string[] syms_text1 = it1.GetTypeAnnotations();
             string[] syms_text2 = it2.GetTypeAnnotations();
 
@@ -141,6 +145,11 @@ namespace Amazon.IonHashDotnet.Tests
 
         private static void CompareHasAnnotations(IIonReader it1, IIonReader it2)
         {
+            //Skip assertion if annotation is zero symbol
+            if (it1.GetTypeAnnotationSymbols().Any(a => a.Text == null && a.Sid == 0))
+            {
+                return;
+            }
             string[] syms_text1 = it1.GetTypeAnnotations();
             string[] syms_text2 = it2.GetTypeAnnotations();
 

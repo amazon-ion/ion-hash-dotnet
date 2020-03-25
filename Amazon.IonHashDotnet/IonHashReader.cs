@@ -223,14 +223,6 @@ namespace Amazon.IonHashDotnet
             return this.reader.GetLobByteSize();
         }
 
-        /// <summary>
-        /// Dispose the IIonReader
-        /// </summary>
-        public void Dispose()
-        {
-            this.reader.Dispose();
-        }
-
         private dynamic GetIonValue()
         {
             switch (this.CurrentType)
