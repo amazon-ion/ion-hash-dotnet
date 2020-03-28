@@ -265,8 +265,7 @@ namespace Amazon.IonHashDotnet.Tests
             {
                 MemoryStream ms = new MemoryStream();
                 IIonWriter writer = IonBinaryWriterBuilder.Build(ms);
-                IIonReader reader = IonReaderBuilder.Build(ionValue.ToPrettyString());
-                writer.WriteValues(reader);
+                ionValue.WriteTo(writer);
                 writer.Flush();
                 return IonReaderBuilder.Build(ms.ToArray());
             }
@@ -278,7 +277,7 @@ namespace Amazon.IonHashDotnet.Tests
         {
             internal override IIonReader GetIonReader(IIonValue ionValue)
             {
-                return IonReaderBuilder.Build(ionValue.ToPrettyString());
+                return IonReaderBuilder.Build(ionValue);
             }
         }
 
