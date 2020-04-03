@@ -81,7 +81,7 @@ namespace Amazon.IonHashDotnet.Tests
 
             ihw.Finish();
 
-            Assert.AreEqual("null [5] null {hello:ion::hash::'world'}", stringWriter.ToString());
+            Assert.AreEqual("null [5] null {hello:ion::hash::world}", stringWriter.ToString());
         }
 
         [TestMethod]
