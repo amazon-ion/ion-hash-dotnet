@@ -85,7 +85,7 @@ namespace Amazon.IonHashDotnet
         }
 
         /// <summary>
-        /// Dispose the IIonReader
+        /// Dispose the IIonReader.
         /// </summary>
         public void Dispose()
         {
