@@ -9,7 +9,7 @@ An implementation of [Amazon Ion Hash](http://amzn.github.io/ion-hash) in C#.
 
 ## Getting Started
 
-This library is designed to work with .NET Core 2.1.  The following example code
+This library targets [.NET Standard 2.0](https://dotnet.microsoft.com/platform/dotnet-standard).  The following example code
 illustrates how to use it:
 
 ```C#
