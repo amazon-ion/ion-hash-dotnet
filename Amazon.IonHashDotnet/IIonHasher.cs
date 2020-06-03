@@ -16,7 +16,7 @@
 namespace Amazon.IonHashDotnet
 {
     /// <summary>
-    /// User-provided hash function that is required by the Amazon Ion Hashing
+    /// User-provided hash function that is required by the Amazon Ion Hash
     /// Specification.
     /// </summary>
     public interface IIonHasher

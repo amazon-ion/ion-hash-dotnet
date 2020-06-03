@@ -18,8 +18,8 @@ namespace Amazon.IonHashDotnet
     using Amazon.IonDotnet;
 
     /// <summary>
-    /// IonReader extension that provides the hash of the IonValue just nexted
-    /// * past or stepped out of, as defined by the Amazon Ion Hash Specification.
+    /// IIonReader extension that provides the hash of the IonValue just nexted
+    /// past or stepped out of, as defined by the Amazon Ion Hash Specification.
     /// <p/>
     /// Implementations of this interface are not thread-safe.
     /// </summary>
@@ -36,7 +36,7 @@ namespace Amazon.IonHashDotnet
         /// the caller skips over it, steps into it, or any combination thereof).
         /// </summary>
         /// <returns>
-        /// Array of bytes representing the hash of the IonValue just
+        /// Array of bytes representing the hash of the Ion value just
         /// nexted past;  if there is no hash, returns an empty array.
         /// </returns>
         byte[] Digest();
