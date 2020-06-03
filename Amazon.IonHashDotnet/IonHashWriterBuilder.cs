@@ -18,6 +18,12 @@ namespace Amazon.IonHashDotnet
     using System;
     using Amazon.IonDotnet;
 
+    /// <summary>
+    /// Build a new <see cref="IIonHashWriter"/> for the given <see cref="IIonWriter"/>
+    /// and <see cref="IIonHasherProvider"/>.
+    /// <p/>
+    /// Instances of this class are not thread-safe.
+    /// </summary>
     public class IonHashWriterBuilder
     {
         private IIonHasherProvider hasherProvider;
@@ -28,23 +34,41 @@ namespace Amazon.IonHashDotnet
         {
         }
 
+        /// <summary>
+        /// The standard builder of <see cref="IonHashWriterBuilder"/>s.
+        /// </summary>
+        /// <returns>The standard builder.</returns>
         public static IonHashWriterBuilder Standard()
         {
             return new IonHashWriterBuilder();
         }
 
+        /// <summary>
+        /// Specifies the writer to compute hashes over.
+        /// </summary>
+        /// <param name="writer">The IIonWriter to compute hashes over.</param>
+        /// <returns>This builder.</returns>
         public IonHashWriterBuilder WithWriter(IIonWriter writer)
         {
             this.writer = writer;
             return this;
         }
 
+        /// <summary>
+        /// Specifies the hasher provider to use.
+        /// </summary>
+        /// <param name="hasherProvider">The IIonHasherProvider instance to use.</param>
+        /// <returns>This builder.</returns>
         public IonHashWriterBuilder WithHasherProvider(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
             return this;
         }
 
+        /// <summary>
+        /// Constructs a new IIonHashWriter, which decorates the IIonWriter with hashes.
+        /// </summary>
+        /// <returns>A new IIonHashWriter object.</returns>
         public IIonHashWriter Build()
         {
             if (this.hasherProvider == null || this.writer == null)

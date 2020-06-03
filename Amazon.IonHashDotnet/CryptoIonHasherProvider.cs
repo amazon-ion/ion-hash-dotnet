@@ -15,6 +15,9 @@
 
 namespace Amazon.IonHashDotnet
 {
+    /// <summary>
+    /// IIonHasherProvider implementation based on System.Security.Cryptography.
+    /// </summary>
     public class CryptoIonHasherProvider : IIonHasherProvider
     {
         private readonly string algorithm;

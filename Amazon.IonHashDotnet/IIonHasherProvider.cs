@@ -15,8 +15,18 @@
 
 namespace Amazon.IonHashDotnet
 {
+    /// <summary>
+    /// An implementation of this interface provides IIonHasher instances
+    /// to an Ion hash implementation as needed.
+    /// <p/>
+    /// Implementations must be thread-safe.
+    /// </summary>
     public interface IIonHasherProvider
     {
+        /// <summary>
+        /// Produces a new IIonHasher instance.
+        /// </summary>
+        /// <returns>The new IIonHasher instance.</returns>
         IIonHasher NewHasher();
     }
 }

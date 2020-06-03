@@ -15,10 +15,23 @@
 
 namespace Amazon.IonHashDotnet
 {
+    /// <summary>
+    /// User-provided hash function that is required by the Amazon Ion Hashing
+    /// Specification.
+    /// </summary>
     public interface IIonHasher
     {
+        /// <summary>
+        /// Updates the hash with the specified array of bytes.
+        /// </summary>
+        /// <param name="bytes">The bytes to hash.</param>
         void Update(byte[] bytes);
 
+        /// <summary>
+        /// Returns the computed hash bytes and resets any internal state
+        /// so the hasher may be reused.
+        /// </summary>
+        /// <returns>The computed hash bytes.</returns>
         byte[] Digest();
     }
 }

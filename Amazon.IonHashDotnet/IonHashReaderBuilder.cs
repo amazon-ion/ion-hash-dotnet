@@ -18,6 +18,12 @@ namespace Amazon.IonHashDotnet
     using System;
     using Amazon.IonDotnet;
 
+    /// <summary>
+    /// Build a new <see cref="IIonHashReader"/> for the given <see cref="IIonReader"/>
+    /// and <see cref="IIonHasherProvider"/>.
+    /// <p/>
+    /// Instances of this class are not thread-safe.
+    /// </summary>
     public class IonHashReaderBuilder
     {
         private IIonHasherProvider hasherProvider = null;
@@ -28,23 +34,41 @@ namespace Amazon.IonHashDotnet
         {
         }
 
+        /// <summary>
+        /// The standard builder of <see cref="IonHashReaderBuilder"/>s.
+        /// </summary>
+        /// <returns>The standard builder.</returns>
         public static IonHashReaderBuilder Standard()
         {
             return new IonHashReaderBuilder();
         }
 
+        /// <summary>
+        /// Specifies the reader to compute hashes over.
+        /// </summary>
+        /// <param name="reader">The IIonReader to compute hasher over.</param>
+        /// <returns>This builder.</returns>
         public IonHashReaderBuilder WithReader(IIonReader reader)
         {
             this.reader = reader;
             return this;
         }
 
+        /// <summary>
+        /// Specifies the hasher provider to use.
+        /// </summary>
+        /// <param name="hasherProvider">The IIonHasherProvider instance to use.</param>
+        /// <returns>This builder.</returns>
         public IonHashReaderBuilder WithHasherProvider(IIonHasherProvider hasherProvider)
         {
             this.hasherProvider = hasherProvider;
             return this;
         }
 
+        /// <summary>
+        /// Constructs a new IIonHashReader, which decorates the IIonReader with hashes.
+        /// </summary>
+        /// <returns>A new IIonHashReader object.</returns>
         public IIonHashReader Build()
         {
             if (this.hasherProvider == null || this.reader == null)
