@@ -18,6 +18,9 @@ namespace Amazon.IonHashDotnet
     using System;
     using Amazon.IonDotnet;
 
+    /// <summary>
+    /// Thrown for unexpected or error conditions while hashing Ion data.
+    /// </summary>
     public class IonHashException : IonException
     {
         public IonHashException(Exception inner)

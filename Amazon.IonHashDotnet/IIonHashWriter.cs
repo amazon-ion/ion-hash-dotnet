@@ -17,8 +17,24 @@ namespace Amazon.IonHashDotnet
 {
     using Amazon.IonDotnet;
 
+    /// <summary>
+    /// IIonWriter extension that provides the hash of the Ion value just written
+    /// or stepped out of, as defined by the Amazon Ion Hash Specification.
+    /// <p/>
+    /// Implementations of this interface are not thread-safe.
+    /// </summary>
+    /// <see cref="IIonWriter"/>
     public interface IIonHashWriter : IIonWriter
     {
+        /// <summary>
+        /// Provides the hash of the Ion value just nexted past or stepped out of;
+        /// hashes of partial Ion values are not provided.  If there is no current
+        /// hash value, returns an empty array.
+        /// </summary>
+        /// <returns>
+        /// Array of bytes representing the hash of the Ion value just
+        /// written or stepped out of;  if there is no hash, returns an empty array.
+        /// </returns>
         byte[] Digest();
     }
 }
