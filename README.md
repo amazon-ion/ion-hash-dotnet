@@ -5,7 +5,6 @@ An implementation of [Amazon Ion Hash](http://amzn.github.io/ion-hash) in C#.
 [![Build Status](https://travis-ci.com/amzn/ion-hash-dotnet.svg?branch=master)](https://travis-ci.com/amzn/ion-hash-dotnet)
 [![nuget version](https://img.shields.io/nuget/v/Amazon.IonHashDotnet)](https://www.nuget.org/packages/Amazon.IonHashDotnet)
 [![license](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/amzn/ion-hash-dotnet/blob/master/LICENSE)
-[![docs](https://img.shields.io/badge/docs-api-green.svg?style=flat-square)](https://amzn.github.io/ion-hash-dotnet/api)
 
 ## Getting Started
 
