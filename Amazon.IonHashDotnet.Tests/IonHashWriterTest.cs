@@ -26,7 +26,7 @@ namespace Amazon.IonHashDotnet.Tests
     public class IonHashWriterTest
     {
         private static readonly IonLoader loader = IonLoader.Default;
-        private static readonly FileInfo file = DirStructure.IonHashDotnetTestFile("ion_hash_tests.ion");
+        private static readonly FileInfo file = DirStructure.IonHashTestFile("ion_hash_tests.ion");
 
         [TestMethod]
         public void TestMiscMethods()
