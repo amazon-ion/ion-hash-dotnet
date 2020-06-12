@@ -31,7 +31,7 @@ namespace Amazon.IonHashDotnet.Tests
             var dataList = new List<object[]>();
 
             var loader = IonLoader.Default;
-            var file = DirStructure.IonHashDotnetTestFile("ion_hash_tests.ion");
+            var file = DirStructure.IonHashTestFile("ion_hash_tests.ion");
             var ionHashTests = loader.Load(file);
             var testsEnumerator = ionHashTests.GetEnumerator();
 
