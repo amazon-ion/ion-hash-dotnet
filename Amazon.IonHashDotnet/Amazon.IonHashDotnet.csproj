@@ -12,6 +12,7 @@
     <Description>A .NET implementation of Amazon Ion Hash. https://amzn.github.io/ion-hash/</Description>
     <Copyright>Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.</Copyright>
     <PackageTags>ion;hash;amazon</PackageTags>
+    <PackageIcon>amazon.png</PackageIcon>
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/8594673?s=200&amp;v=4</PackageIconUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>true</SignAssembly>

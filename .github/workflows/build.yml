@@ -1,4 +1,4 @@
-name: ion-vscode-plugin CI build
+name: Ion Hash DotNet CI
 
 on: [push, pull_request]
 
