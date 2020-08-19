@@ -23,4 +23,4 @@ jobs:
       - name: Project Build
         run: dotnet build --configuration Release  
       - name: Project Test
-        run: dotnet test --verbosity normal
+        run: dotnet test --no-build --no-restore --verbosity normal --verbosity normal
