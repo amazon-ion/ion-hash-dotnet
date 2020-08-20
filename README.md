@@ -2,7 +2,7 @@
 
 An implementation of [Amazon Ion Hash](http://amzn.github.io/ion-hash) in C#.
 
-[![Build Status](https://travis-ci.com/amzn/ion-hash-dotnet.svg?branch=master)](https://travis-ci.com/amzn/ion-hash-dotnet)
+[![Build Status](https://github.com/amzn/ion-hash-dotnet/workflows/Ion%20Hash%20DotNet%20CI/badge.svg)](https://github.com/amzn/ion-dotnet/actions?query=workflow%3A%22Ion+DotNet+CI%22)
 [![nuget version](https://img.shields.io/nuget/v/Amazon.IonHashDotnet)](https://www.nuget.org/packages/Amazon.IonHashDotnet)
 [![license](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/amzn/ion-hash-dotnet/blob/master/LICENSE)
 
@@ -100,4 +100,3 @@ are not expected to work at this time.
 ## License
 
 This library is licensed under the Apache-2.0 License.
-
