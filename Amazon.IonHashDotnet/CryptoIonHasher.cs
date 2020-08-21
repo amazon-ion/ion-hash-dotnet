@@ -40,7 +40,9 @@ namespace Amazon.IonHashDotnet
         public virtual byte[] Digest()
         {
             this.hashAlgorithm.TransformFinalBlock(new byte[0], 0, 0);
-            return this.hashAlgorithm.Hash;
+            var result = this.hashAlgorithm.Hash;
+            this.hashAlgorithm.Initialize();
+            return result;
         }
     }
 }
