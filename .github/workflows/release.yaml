@@ -91,4 +91,3 @@ jobs:
       - name: release
         run: |
           dotnet pack --configuration Release --no-build
-          dotnet nuget push Amazon.IonHashDotnet/bin/Release/Amazon.IonHashDotnet.*.nupkg --api-key ${{ secrets.AWS_NUGET_KEY }} --source https://api.nuget.org/v3/index.json
