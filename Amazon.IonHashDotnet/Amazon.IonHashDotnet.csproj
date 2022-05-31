@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Amazon.IonHashDotnet</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>amazon-ion</Authors>
     <Company>Amazon.com</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
