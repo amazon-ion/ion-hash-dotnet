@@ -89,6 +89,7 @@ jobs:
           # Get signed DLL from S3
           aws s3api get-object --bucket ${{ secrets.AWS_SIGNED_BUCKET }} --key ${{ secrets.AWS_KEY }}-${job_id} Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
       - name: release
+        shell: bash
         run: |
           dotnet pack --configuration Release --no-build
           dotnet nuget push Amazon.IonHashDotnet/bin/Release/Amazon.IonHashDotnet.*.nupkg --api-key ${{ secrets.AWS_NUGET_KEY }} --source https://api.nuget.org/v3/index.json
