@@ -2,9 +2,9 @@
 
 An implementation of [Amazon Ion Hash](http://amzn.github.io/ion-hash) in C#.
 
-[![Build Status](https://github.com/amzn/ion-hash-dotnet/workflows/Ion%20Hash%20DotNet%20CI/badge.svg)](https://github.com/amzn/ion-hash-dotnet/actions?query=workflow%3A%22Ion+Hash+DotNet+CI%22)
+[![Build Status](https://github.com/amazon-ion/ion-hash-dotnet/workflows/Ion%20Hash%20DotNet%20CI/badge.svg)](https://github.com/amazon-ion/ion-hash-dotnet/actions?query=workflow%3A%22Ion+Hash+DotNet+CI%22)
 [![nuget version](https://img.shields.io/nuget/v/Amazon.IonHashDotnet)](https://www.nuget.org/packages/Amazon.IonHashDotnet)
-[![license](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/amzn/ion-hash-dotnet/blob/master/LICENSE)
+[![license](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/amazon-ion/ion-hash-dotnet/blob/master/LICENSE)
 
 ## Getting Started
 
@@ -79,7 +79,7 @@ The easiest way to clone the `ion-hash-dotnet` repository and initialize its `io
 submodule is to run the following command:
 
 ```
-$ git clone --recursive https://github.com/amzn/ion-hash-dotnet.git ion-hash-dotnet
+$ git clone --recursive https://github.com/amazon-ion/ion-hash-dotnet.git ion-hash-dotnet
 ```
 
 Alternatively, the submodule may be initialized independently from the clone
@@ -93,7 +93,7 @@ $ git submodule update
 
 ## Known Issues
 
-Any tests commented out in [IonHashDotnet.Tests/ion_hash_tests.ion](https://github.com/amzn/ion-hash-dotnet/blob/master/IonHashDotnet.Tests/ion_hash_tests.ion)
+Any tests commented out in [IonHashDotnet.Tests/ion_hash_tests.ion](https://github.com/amazon-ion/ion-hash-dotnet/blob/master/IonHashDotnet.Tests/ion_hash_tests.ion)
 are not expected to work at this time.
 
 

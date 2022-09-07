@@ -7,7 +7,7 @@
     <Authors>amazon-ion</Authors>
     <Company>Amazon.com</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/amzn/ion-hash-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/amazon-ion/ion-hash-dotnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Description>A .NET implementation of Amazon Ion Hash. https://amzn.github.io/ion-hash/</Description>
     <Copyright>Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.</Copyright>
