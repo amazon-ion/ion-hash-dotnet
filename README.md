@@ -1,10 +1,12 @@
-# Amazon Ion Hash .NET
+# Amazon Ion Hash .NET (Deprecated)
 
 An implementation of [Amazon Ion Hash](http://amzn.github.io/ion-hash) in C#.
 
 [![Build Status](https://github.com/amazon-ion/ion-hash-dotnet/workflows/Ion%20Hash%20DotNet%20CI/badge.svg)](https://github.com/amazon-ion/ion-hash-dotnet/actions?query=workflow%3A%22Ion+Hash+DotNet+CI%22)
 [![nuget version](https://img.shields.io/nuget/v/Amazon.IonHashDotnet)](https://www.nuget.org/packages/Amazon.IonHashDotnet)
 [![license](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/amazon-ion/ion-hash-dotnet/blob/master/LICENSE)
+
+As of 8/20/2024, this library is deprecated and will not receive further updates. Users should consider migrating to [other Ion solutions](https://amazon-ion.github.io/ion-docs/libs.html).
 
 ## Getting Started
 
